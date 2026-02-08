@@ -555,4 +555,66 @@ document.addEventListener('DOMContentLoaded', () => {
       drawFlow();
     });
   }
+
+  const pyramid = document.querySelector('.pyramid');
+  if (pyramid) {
+    const tiers = Array.from(pyramid.querySelectorAll('.pyramid-tier'));
+
+    const setTierOpen = (tier, isOpen) => {
+      tier.classList.toggle('is-open', isOpen);
+      const toggle = tier.querySelector('.tier-toggle');
+      const content = tier.querySelector('.tier-content');
+      if (toggle) {
+        toggle.setAttribute('aria-expanded', String(isOpen));
+        toggle.textContent = isOpen ? 'Hide categories' : 'Show categories';
+      }
+      if (content) {
+        content.setAttribute('aria-hidden', String(!isOpen));
+      }
+    };
+
+    tiers.forEach((tier) => {
+      const toggle = tier.querySelector('.tier-toggle');
+      const content = tier.querySelector('.tier-content');
+      if (!toggle || !content) return;
+
+      toggle.addEventListener('click', () => {
+        const isOpen = !tier.classList.contains('is-open');
+        setTierOpen(tier, isOpen);
+      });
+
+      const head = tier.querySelector('.tier-head');
+      if (head) {
+        head.addEventListener('click', (event) => {
+          if (event.target.closest('button')) return;
+          const isOpen = !tier.classList.contains('is-open');
+          setTierOpen(tier, isOpen);
+        });
+      }
+    });
+
+    tiers.forEach((tier) => {
+      if (tier.dataset.open === 'true') {
+        setTierOpen(tier, true);
+      }
+    });
+  }
+
+  const playOnceVideos = document.querySelectorAll('video[data-play-once]');
+  playOnceVideos.forEach((video) => {
+    const finalize = () => {
+      video.classList.add('is-ended');
+      video.pause();
+      if (!Number.isNaN(video.duration) && video.duration > 0) {
+        video.currentTime = Math.max(0, video.duration - 0.04);
+      }
+    };
+
+    video.addEventListener('ended', finalize);
+    video.addEventListener('loadedmetadata', () => {
+      if (video.autoplay) {
+        video.play().catch(() => {});
+      }
+    });
+  });
 });

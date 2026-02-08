@@ -697,6 +697,34 @@ main {
   box-shadow: 0 18px 38px rgba(12, 27, 42, 0.16);
 }
 
+.flower-more {
+  position: absolute;
+  right: 24px;
+  bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.15rem;
+  padding: 0.65rem 0.85rem;
+  border-radius: 14px;
+  border: 1px solid rgba(11, 61, 145, 0.2);
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 10px 22px rgba(12, 27, 42, 0.08);
+  font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+  width: fit-content;
+  z-index: 3;
+}
+
+.flower-more-title {
+  font-weight: 600;
+  color: var(--forest);
+}
+
+.flower-more-sub {
+  font-size: 0.82rem;
+  color: rgba(12, 27, 42, 0.7);
+}
+
 @media (max-width: 1000px) {
   .flower {
     min-height: auto;
@@ -933,6 +961,320 @@ main {
   pointer-events: none;
 }
 
+.pyramid-section {
+  position: relative;
+}
+
+.classification-hero {
+  position: relative;
+  padding-right: 220px;
+}
+
+.joint-logo-corner {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 160px;
+  height: 90px;
+  padding: 0.35rem;
+  border-radius: 14px;
+  border: 2px solid rgba(11, 61, 145, 0.45);
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 10px 24px rgba(12, 27, 42, 0.14);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.joint-logo-video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 10px;
+}
+
+.pyramid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+  margin-top: 1.4rem;
+  position: relative;
+}
+
+.pyramid-connector {
+  height: 32px;
+  width: 100%;
+  position: relative;
+  display: block;
+  pointer-events: none;
+}
+
+.pyramid-connector::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 2px;
+  background: linear-gradient(180deg, rgba(11, 61, 145, 0.45), rgba(107, 183, 200, 0.45));
+  transform: translateX(-50%);
+}
+
+.pyramid-connector::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: calc(50% - 5px);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(42, 138, 122, 0.35);
+  border: 1px solid rgba(11, 61, 145, 0.45);
+  transform: translateX(-50%);
+  box-shadow: 0 6px 16px rgba(12, 27, 42, 0.18);
+}
+
+.pyramid-tier {
+  width: min(100%, var(--tier-width, 100%));
+  margin: 0 auto;
+  padding: 1.6rem 1.8rem;
+  border-radius: 28px;
+  border: 1px solid rgba(215, 225, 234, 0.9);
+  background: linear-gradient(140deg, rgba(255, 255, 255, 0.98), var(--tier-accent, rgba(215, 236, 255, 0.65)));
+  box-shadow: 0 18px 35px rgba(12, 27, 42, 0.12);
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.pyramid-tier::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 20% 20%, rgba(27, 95, 138, 0.15), transparent 60%);
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.pyramid-tier::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140' viewBox='0 0 140 140'><g fill='none' stroke='%231b5f8a' stroke-opacity='0.15' stroke-width='1.4'><path d='M0 40c24-18 52-18 76 0 20 14 44 14 64 0' /><path d='M0 80c24-18 52-18 76 0 20 14 44 14 64 0' /></g></svg>");
+  background-repeat: repeat;
+  background-size: 140px 140px;
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.pyramid-links {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.pyramid-link {
+  fill: none;
+  stroke: rgba(27, 95, 138, 0.38);
+  stroke-width: 1.1;
+  stroke-linecap: round;
+  stroke-dasharray: 4 6;
+  animation: drift 16s linear infinite;
+}
+
+.pyramid-link.main {
+  stroke: url(#pyramidGradient);
+  stroke-width: 1.8;
+  stroke-dasharray: 0;
+}
+
+.pyramid-node {
+  fill: rgba(42, 138, 122, 0.3);
+  stroke: rgba(11, 61, 145, 0.4);
+  stroke-width: 0.6;
+  animation: pulse 5s ease-in-out infinite;
+}
+
+.pyramid-node.alt {
+  fill: rgba(107, 183, 200, 0.3);
+}
+
+.pyramid-tier:hover {
+  transform: translateY(-3px);
+  border-color: rgba(27, 95, 138, 0.55);
+  box-shadow: 0 22px 45px rgba(12, 27, 42, 0.18);
+}
+
+.tier-apex {
+  text-align: center;
+  --tier-accent: rgba(107, 183, 200, 0.3);
+}
+
+.tier-apex .tier-head {
+  justify-content: center;
+  text-align: center;
+}
+
+.tier-primary {
+  --tier-accent: rgba(11, 61, 145, 0.18);
+}
+
+.tier-secondary {
+  --tier-accent: rgba(42, 138, 122, 0.2);
+}
+
+.tier-neuropathic {
+  --tier-accent: rgba(107, 183, 200, 0.22);
+}
+
+.tier-appendix {
+  --tier-accent: rgba(215, 236, 255, 0.7);
+}
+
+.tier-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  position: relative;
+  z-index: 1;
+}
+
+.tier-head h3 {
+  margin: 0.2rem 0 0.4rem;
+}
+
+.tier-head p {
+  margin: 0;
+  color: rgba(12, 27, 42, 0.78);
+}
+
+.tier-kicker {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+  color: var(--spruce);
+  font-weight: 600;
+}
+
+.tier-meta {
+  display: inline-flex;
+  margin-top: 0.45rem;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  background: rgba(11, 61, 145, 0.12);
+  color: var(--forest);
+  font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+  font-weight: 600;
+}
+
+.tier-toggle {
+  border: 1px solid rgba(27, 95, 138, 0.35);
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--forest);
+  border-radius: 999px;
+  padding: 0.45rem 0.95rem;
+  font-size: 0.85rem;
+  font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.tier-toggle:hover {
+  transform: translateY(-1px);
+  border-color: rgba(11, 61, 145, 0.6);
+  box-shadow: 0 12px 25px rgba(12, 27, 42, 0.12);
+}
+
+.tier-content {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transform: translateY(-8px);
+  transition: max-height 0.35s ease, opacity 0.35s ease, transform 0.35s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.pyramid-tier.is-open .tier-content {
+  max-height: 2400px;
+  opacity: 1;
+  transform: translateY(0);
+  margin-top: 1rem;
+}
+
+.tier-tree,
+.tier-tree ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.tier-tree {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.tier-tree > li {
+  padding: 0.7rem 0.85rem;
+  border-radius: 16px;
+  border: 1px solid rgba(215, 225, 234, 0.9);
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 14px 28px rgba(12, 27, 42, 0.08);
+  position: relative;
+  overflow: visible;
+}
+
+.tier-tree ul {
+  margin-top: 0.6rem;
+  padding-left: 1rem;
+  border-left: 1px dashed rgba(27, 95, 138, 0.35);
+  display: grid;
+  gap: 0.45rem;
+}
+
+.tier-tree li {
+  position: relative;
+}
+
+.tier-item {
+  display: block;
+  font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.tier-tree ul .tier-item {
+  font-weight: 500;
+  font-size: 0.92rem;
+  padding: 0.35rem 0.6rem;
+  border-radius: 12px;
+  border: 1px solid rgba(215, 225, 234, 0.8);
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 10px 18px rgba(12, 27, 42, 0.08);
+}
+
+.tier-tree li::before {
+  content: "";
+  position: absolute;
+  left: -0.85rem;
+  top: 0.9rem;
+  width: 10px;
+  height: 2px;
+  background: rgba(27, 95, 138, 0.35);
+}
+
+.tier-tree li:hover > .tier-item {
+  color: var(--forest);
+}
+}
+
 .footer {
   padding: 2.5rem 1.5rem 3rem;
   border-top: 1px solid var(--line);
@@ -1011,6 +1353,27 @@ body.loaded .reveal.stagger {
   }
 }
 
+@keyframes drift {
+  from {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: -40;
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+}
+
 @media (max-width: 860px) {
   .navbar {
     flex-direction: column;
@@ -1019,6 +1382,10 @@ body.loaded .reveal.stagger {
 
   .hero {
     padding: 2.2rem 1.8rem;
+  }
+
+  .classification-hero {
+    padding-right: 0;
   }
 
   .hero-inner {
@@ -1053,6 +1420,22 @@ body.loaded .reveal.stagger {
 
   .impact-panel {
     margin-top: 0;
+  }
+
+  .pyramid-tier {
+    width: 100%;
+  }
+
+  .tier-head {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .joint-logo-corner {
+    position: static;
+    width: 100%;
+    max-width: 220px;
+    margin-top: 1rem;
   }
 }
 
