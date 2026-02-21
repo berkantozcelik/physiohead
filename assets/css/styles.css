@@ -6,7 +6,7 @@
   --clay: #6bb7c8;
   --sun: #d7ecff;
   --paper: #ffffff;
-  --mist: #f2f7fb;
+  --mist: #f3eee2;
   --line: #d7e1ea;
   --shadow: 0 18px 45px rgba(12, 27, 42, 0.14);
   --radius-lg: 22px;
@@ -57,7 +57,7 @@ main {
   position: sticky;
   top: 0;
   z-index: 10;
-  background: rgba(251, 250, 247, 0.9);
+  background: rgba(243, 238, 226, 0.9);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid rgba(222, 214, 201, 0.7);
 }
@@ -1383,7 +1383,7 @@ main {
 .footer {
   padding: 2.5rem 1.5rem 3rem;
   border-top: 1px solid rgba(255, 255, 255, 0.92);
-  background: var(--paper);
+  background: var(--mist);
 }
 
 .footer-grid {
