@@ -25,9 +25,8 @@
         <a href="funding.html">Funding</a>
         <a href="white-paper.html">White Paper</a>
         <a href="classification.html">ICHD-3</a>
-        <a class="is-active" href="contact.html">Contact</a>
       </div>
-      <a class="nav-cta" href="contact.html">Join the SIG</a>
+      <a class="nav-cta" href="contact.html">Contact / Join the SIG</a>
     </nav>
   </header>
 
@@ -42,29 +41,32 @@
 
     <section class="section">
       <div class="grid two">
-        <div class="card reveal stagger" style="--d: 0.15s;">
+        <div class="card reveal stagger engage-aurora" style="--d: 0.15s;">
           <h3>Ways to engage</h3>
-          <ul class="list">
+          <ul class="list engage-list">
             <li>Join as a clinician, researcher, or allied health professional.</li>
             <li>Contribute to research, white papers, or consensus statements.</li>
             <li>Support education, training, or public awareness initiatives.</li>
             <li>Partner on digital, telehealth, or hybrid care models.</li>
           </ul>
-          <div class="notice">
-            Email addresses are intentionally not published. Formal contact channels will be shared
-            through the official SIG and partner society communications.
+          <div class="notice contact-email-card">
+            <strong>Official secretariat contact</strong>
+            <a class="contact-email-link" href="mailto:physiohead@secretary.net">physiohead@secretary.net</a>
           </div>
         </div>
         <div class="card reveal stagger" style="--d: 0.2s;">
           <h3>Interest form</h3>
-          <form class="form" action="#" method="post">
+          <form class="form" action="https://formsubmit.co/physiohead@secretary.net" method="post">
+            <input type="hidden" name="_subject" value="PhysioHead Website Contact Form" />
+            <input type="hidden" name="_captcha" value="false" />
+            <input type="hidden" name="_next" value="https://gmpsturkiye.pythonanywhere.com/contact.html?submitted=1" />
             <div>
               <label for="name">Full name</label>
-              <input id="name" name="name" type="text" placeholder="Your name" />
+              <input id="name" name="name" type="text" placeholder="Your name" required />
             </div>
             <div>
               <label for="email">Email</label>
-              <input id="email" name="email" type="email" placeholder="Your email" />
+              <input id="email" name="email" type="email" placeholder="Your email" required />
             </div>
             <div>
               <label for="affiliation">Affiliation</label>
@@ -83,10 +85,10 @@
             </div>
             <div>
               <label for="message">Message</label>
-              <textarea id="message" name="message" placeholder="Tell us how you would like to contribute."></textarea>
+              <textarea id="message" name="message" placeholder="Tell us how you would like to contribute." required></textarea>
             </div>
             <button class="button primary" type="submit">Submit interest</button>
-            <small>This form is a placeholder and requires a backend to receive submissions.</small>
+            <small>Form submissions are sent to the official secretariat email and will be answered shortly.</small>
           </form>
         </div>
       </div>
@@ -112,7 +114,8 @@
       <div>
         <strong>Get involved</strong>
         <p><a href="contact.html">Join or collaborate</a></p>
-        <small>Contact details will be shared through official SIG channels.</small>
+        <p><a href="mailto:physiohead@secretary.net">physiohead@secretary.net</a></p>
+        <small>Official secretariat contact for PhysioHead communications.</small>
       </div>
       <div>
         <strong>Legal</strong>

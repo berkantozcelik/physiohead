@@ -1382,7 +1382,7 @@ main {
 
 .footer {
   padding: 2.5rem 1.5rem 3rem;
-  border-top: 1px solid var(--line);
+  border-top: 1px solid rgba(255, 255, 255, 0.92);
   background: var(--paper);
 }
 
@@ -1396,6 +1396,12 @@ main {
 
 .footer small {
   color: rgba(15, 29, 26, 0.7);
+  font-size: 0.76rem;
+}
+
+.footer p,
+.footer a {
+  font-size: 0.9rem;
 }
 
 .form {
@@ -1427,11 +1433,101 @@ main {
   resize: vertical;
 }
 
+.form button.button {
+  justify-content: center;
+  font-size: 1.12rem;
+}
+
 .notice {
   background: rgba(27, 95, 138, 0.1);
   padding: 0.9rem 1rem;
   border-radius: var(--radius-sm);
   font-size: 0.9rem;
+}
+
+.engage-list {
+  list-style: none;
+  padding-left: 0;
+  display: grid;
+  gap: 0.6rem;
+}
+
+.engage-list li {
+  padding: 0.62rem 0.72rem;
+  border: 1px solid rgba(11, 61, 145, 0.14);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 8px 18px rgba(12, 27, 42, 0.06);
+  position: relative;
+  padding-left: 0.72rem;
+}
+
+.contact-email-card {
+  margin-top: 0.9rem;
+  display: grid;
+  gap: 0.45rem;
+  border: 1px solid rgba(11, 61, 145, 0.2);
+  background: linear-gradient(135deg, rgba(11, 61, 145, 0.08), rgba(42, 138, 122, 0.12));
+}
+
+.contact-email-card strong {
+  font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+  font-size: 0.86rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(12, 27, 42, 0.72);
+}
+
+.contact-email-link {
+  width: fit-content;
+  border-radius: 999px;
+  padding: 0.3rem 0.7rem;
+  border: 1px solid rgba(11, 61, 145, 0.3);
+  background: rgba(255, 255, 255, 0.85);
+  color: var(--forest);
+  font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.contact-email-link:hover {
+  background: rgba(255, 255, 255, 1);
+  transform: translateY(-1px);
+}
+
+.engage-aurora {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.engage-aurora::before,
+.engage-aurora::after {
+  content: "";
+  position: absolute;
+  inset: -20%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.engage-aurora::before {
+  background:
+    radial-gradient(55% 45% at 16% 20%, rgba(107, 183, 200, 0.28), transparent 70%),
+    radial-gradient(52% 48% at 84% 26%, rgba(27, 95, 138, 0.24), transparent 72%);
+  filter: blur(10px);
+}
+
+.engage-aurora::after {
+  background:
+    linear-gradient(128deg, rgba(215, 236, 255, 0.22) 0%, rgba(11, 61, 145, 0.12) 55%, rgba(107, 183, 200, 0.2) 100%);
+  mix-blend-mode: screen;
+  opacity: 0.85;
+}
+
+.engage-aurora > * {
+  position: relative;
+  z-index: 1;
 }
 
 .reveal {
