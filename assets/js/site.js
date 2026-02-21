@@ -76,6 +76,20 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  const memberCards = Array.from(document.querySelectorAll('.person-card'));
+  if (memberCards.length) {
+    memberCards.forEach((card) => {
+      const toggle = card.querySelector('.person-toggle');
+      if (!toggle) return;
+
+      toggle.addEventListener('click', () => {
+        const willOpen = !card.classList.contains('is-open');
+        card.classList.toggle('is-open', willOpen);
+        toggle.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+      });
+    });
+  }
+
   const activityNetwork = document.querySelector('.activity-network');
   if (activityNetwork) {
     const canvas = activityNetwork.querySelector('.activity-network-canvas');
@@ -599,6 +613,27 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
+
+  const accordions = Array.from(document.querySelectorAll('[data-accordion]'));
+  accordions.forEach((accordion) => {
+    const items = Array.from(accordion.querySelectorAll('.accordion-item'));
+    items.forEach((item) => {
+      const toggle = item.querySelector('.accordion-toggle');
+      const content = item.querySelector('.accordion-content');
+      if (!toggle || !content) return;
+
+      const setOpen = (isOpen) => {
+        item.classList.toggle('is-open', isOpen);
+        toggle.setAttribute('aria-expanded', String(isOpen));
+        toggle.textContent = isOpen ? 'Hide details' : 'Show details';
+        content.setAttribute('aria-hidden', String(!isOpen));
+      };
+
+      toggle.addEventListener('click', () => {
+        setOpen(!item.classList.contains('is-open'));
+      });
+    });
+  });
 
   const playOnceVideos = document.querySelectorAll('video[data-play-once]');
   playOnceVideos.forEach((video) => {
