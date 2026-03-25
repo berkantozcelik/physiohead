@@ -630,6 +630,7 @@ main {
   background-size: auto 100%;
   background-position: center top;
   filter: drop-shadow(0 14px 20px rgba(12, 27, 42, 0.1));
+  mix-blend-mode: screen;
   transition: transform 0.24s ease, filter 0.24s ease;
 }
 
