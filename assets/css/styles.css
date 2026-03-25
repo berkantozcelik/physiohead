@@ -625,7 +625,7 @@ main {
 .funding-pillar-visual {
   width: 100%;
   min-height: 500px;
-  background-image: url("../img/illustrations/funding-pillars-reference.avif");
+  background-image: url("../img/illustrations/funding-pillars-reference-render.png");
   background-repeat: no-repeat;
   background-size: auto 100%;
   background-position: center top;
