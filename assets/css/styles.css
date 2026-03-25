@@ -251,6 +251,10 @@ main {
   color: rgba(15, 29, 26, 0.82);
 }
 
+.section-head {
+  margin-bottom: 1.25rem;
+}
+
 .grid {
   display: grid;
   gap: 1.5rem;
@@ -581,6 +585,144 @@ main {
 
 .activity-network-canvas {
   opacity: 0.7;
+}
+
+.funding-hero-visual {
+  background:
+    radial-gradient(circle at 30% 24%, rgba(215, 236, 255, 0.9), transparent 36%),
+    linear-gradient(155deg, rgba(11, 61, 145, 0.12), rgba(255, 255, 255, 0.92));
+}
+
+.funding-hero-visual img {
+  object-fit: contain;
+  padding: 1.2rem;
+  filter: drop-shadow(0 18px 28px rgba(11, 61, 145, 0.15));
+}
+
+.funding-pillars-stage {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem;
+  align-items: start;
+  padding: 0.4rem 0;
+  border-radius: var(--radius-lg);
+}
+
+.funding-pillar-link {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  align-content: stretch;
+  min-height: 500px;
+  padding: 0;
+  outline: none;
+  border-radius: 0;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+
+.funding-pillar-visual {
+  width: 100%;
+  min-height: 500px;
+  background-image: url("../img/illustrations/funding-pillars-reference.avif");
+  background-repeat: no-repeat;
+  background-size: auto 100%;
+  background-position: center top;
+  filter: drop-shadow(0 14px 20px rgba(12, 27, 42, 0.1));
+  transition: transform 0.24s ease, filter 0.24s ease;
+}
+
+.funding-pillar-title {
+  position: absolute;
+  top: 42%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(260px, calc(100% - 2rem));
+  text-align: center;
+  font-family: "Cormorant Garamond", "Georgia", serif;
+  font-size: 1.45rem;
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--forest);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.92);
+  transition: transform 0.24s ease, color 0.24s ease;
+}
+
+.funding-pillar-link:hover,
+.funding-pillar-link:focus-visible {
+  z-index: 2;
+}
+
+.funding-pillar-link:hover .funding-pillar-title,
+.funding-pillar-link:focus-visible .funding-pillar-title {
+  transform: translate(-50%, calc(-50% - 4px));
+  color: var(--forest);
+}
+
+.funding-pillar-link:hover .funding-pillar-visual,
+.funding-pillar-link:focus-visible .funding-pillar-visual {
+  transform: translateY(-4px);
+  filter: drop-shadow(0 18px 28px rgba(12, 27, 42, 0.12));
+}
+
+.funding-details {
+  margin-top: 1.5rem;
+}
+
+.funding-detail-card {
+  scroll-margin-top: 120px;
+}
+
+.funding-detail-card h3 {
+  margin: 0.65rem 0 0.5rem;
+}
+
+.funding-detail-card p {
+  margin: 0;
+}
+
+.funding-framework {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(280px, 0.8fr);
+  gap: 1.5rem;
+  padding: 1.8rem;
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(circle at 16% 22%, rgba(107, 183, 200, 0.22), transparent 32%),
+    radial-gradient(circle at 86% 18%, rgba(11, 61, 145, 0.14), transparent 30%),
+    linear-gradient(150deg, rgba(215, 236, 255, 0.5), rgba(255, 255, 255, 0.96));
+  border: 1px solid rgba(11, 61, 145, 0.12);
+  box-shadow: 0 16px 34px rgba(12, 27, 42, 0.08);
+}
+
+.funding-framework-copy {
+  display: grid;
+  align-content: start;
+  gap: 0.9rem;
+}
+
+.funding-framework-copy h2 {
+  margin: 0;
+}
+
+.funding-framework-copy p {
+  margin: 0;
+  max-width: 58ch;
+}
+
+.funding-framework-card {
+  align-self: stretch;
+  display: grid;
+  align-content: start;
+  gap: 0.9rem;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(4px);
+}
+
+.funding-framework-card h3,
+.funding-framework-card p {
+  margin: 0;
 }
 .grid.three {
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -1637,6 +1779,26 @@ body.loaded .reveal.stagger {
     width: 100%;
     max-width: 220px;
     margin-top: 1rem;
+  }
+
+  .funding-pillars-stage {
+    grid-template-columns: 1fr;
+    padding: 0;
+  }
+
+  .funding-pillar-link {
+    min-height: 430px;
+  }
+
+  .funding-pillar-title {
+    top: 40%;
+    width: min(280px, 70vw);
+    font-size: 1.26rem;
+  }
+
+  .funding-framework {
+    grid-template-columns: 1fr;
+    padding: 1.5rem;
   }
 }
 
