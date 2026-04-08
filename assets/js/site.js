@@ -652,4 +652,101 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   });
+
+  const accessUsers = {
+    aynurozge: 'f6ff609594334fd5c0fb165c486392fc10f6a934c4ea6f0a58c217919599eccd',
+    liciagrazzi: '86688202202855c28f8f79348f807bf7dd33f05d58e0bc9bd7dbc496a73063fa',
+    paolomartelletti: 'e41108e3342dd24d848fe1f609952345d5fb270bd612349106c52836ba032a2d',
+    dilaraonan: '1e6aaf84ee6a24bec329fb3f54c21d7c543a5c19200d5170820eea62127660bf',
+    berkantozcelik: '98fb5a2ad4e5fb18585b4b84a2f50f62e2a30accfa3144f628f85c0025e04c59',
+    dawnbuse: '05975337ba08af1f50008b6bf1d3b2e7025fa0e4a26deb0a0b865efdb9feeaa4',
+    araooliveira: 'a2b6d5c84dfdc78c234f39188279138f1065e2ef3a1b07476ddd856a745c3e65',
+    matteocastaldo: '335c366302d4d91ef9685ed1eb4fdc8d6372230d557ff5f7e43c8eae9910e892',
+    najibkissani: 'faf12915a9a1e54727286e0fe03fab139d7a7e75502756d6b211ed827eb32514',
+    miaminen: 'b1308f14d0c7d81752aaad938e92fb6b1858e33f49363cd21d18ed8680697fd0',
+    rajeevojha: '43e3ed4a7c1b8f82833d775d65505ff36daa002dd57ec3b01e0dc9a132620090',
+    albertoraggi: '8963068ed0bf7ba4afb56921896260e84fa96564d1363fa90e4e0de0987047f6',
+    paulrizzoli: 'fd715991a134324c3722cae585262c3c5084acbaa1b18c35613509ca987c9e70',
+    elizabethseng: '388c11a44ac93919cb3a451680cc82c54ceb8e8bfd2ce1f07295b079b37d9aa3',
+    mansoureh: '6f960d1807e45780d52eb11b75d6b0c03aeb1b2ea38b56315a6f13ee2f6c3f3a',
+    deryauluduz: '9d8c20ecb14afb163d8966eebb48d790b8b3cd968e4701eed93a2732e7f28f83',
+    rebeccawells: '78cef7a54c8a1056371492855a7bb392d13329ebc0c882c8adbabfa4504e344f',
+  };
+
+  const getAccessKey = (scope) => `physiohead-access:${scope}`;
+
+  const hashValue = async (value) => {
+    const buffer = await crypto.subtle.digest(
+      'SHA-256',
+      new TextEncoder().encode(value)
+    );
+    return Array.from(new Uint8Array(buffer))
+      .map((byte) => byte.toString(16).padStart(2, '0'))
+      .join('');
+  };
+
+  const getNextPath = (fallback) => {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('next') || fallback;
+  };
+
+  const loginForms = Array.from(document.querySelectorAll('[data-access-form]'));
+  loginForms.forEach((form) => {
+    const scope = document.body.dataset.accessScope || 'meeting-01';
+    const message = form.querySelector('[data-access-message]');
+    const redirectTarget = form.dataset.accessRedirect || 'meeting-materials.html';
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const username = form.elements.username.value.trim();
+      const password = form.elements.password.value;
+      const expectedHash = accessUsers[username];
+
+      if (!expectedHash) {
+        if (message) {
+          message.textContent = 'Invalid username or password.';
+          message.classList.add('is-error');
+          message.classList.remove('is-success');
+        }
+        return;
+      }
+
+      const passwordHash = await hashValue(password);
+      if (passwordHash !== expectedHash) {
+        if (message) {
+          message.textContent = 'Invalid username or password.';
+          message.classList.add('is-error');
+          message.classList.remove('is-success');
+        }
+        return;
+      }
+
+      localStorage.setItem(getAccessKey(scope), username);
+      if (message) {
+        message.textContent = 'Access granted. Redirecting...';
+        message.classList.remove('is-error');
+        message.classList.add('is-success');
+      }
+
+      window.location.href = getNextPath(redirectTarget);
+    });
+  });
+
+  const protectedScope = document.body.dataset.protectedScope;
+  if (protectedScope) {
+    const sessionUser = localStorage.getItem(getAccessKey(protectedScope));
+    if (!sessionUser) {
+      const next = encodeURIComponent(window.location.pathname.split('/').pop());
+      window.location.replace(`meeting-access.html?next=${next}`);
+    }
+  }
+
+  const logoutButtons = Array.from(document.querySelectorAll('[data-access-logout]'));
+  logoutButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      const scope = button.dataset.accessLogout;
+      localStorage.removeItem(getAccessKey(scope));
+      window.location.href = 'meeting-access.html';
+    });
+  });
 });

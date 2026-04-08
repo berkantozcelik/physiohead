@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Disclaimer | PhysioHead</title>
-  <meta name="description" content="Legal disclaimer for PhysioHead content and website use." />
+  <title>First Meeting Materials | PhysioHead</title>
+  <meta name="description" content="Restricted meeting materials for the first PhysioHead meeting." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="assets/css/styles.css" />
 </head>
-<body>
+<body data-protected-scope="meeting-01">
   <header class="site-header">
     <nav class="navbar">
       <a class="brand" href="index.html">
@@ -23,7 +23,7 @@
         <a href="activities.html">Activities</a>
         <a href="funding.html">Funding</a>
         <a href="white-paper.html">White Paper</a>
-        <a href="updates.html">Updates</a>
+        <a class="is-active" href="updates.html">Updates</a>
         <a href="classification.html">ICHD-3</a>
       </div>
       <a class="nav-cta" href="contact.html">Contact / Join the SIG</a>
@@ -32,38 +32,53 @@
 
   <main class="container">
     <section class="hero reveal">
-      <h1>Disclaimer</h1>
+      <span class="tag">Restricted meeting materials</span>
+      <h1>First PhysioHead Meeting Resources</h1>
       <p>
-        The information on this website is provided for general educational and informational purposes only.
-        It is not medical advice, diagnosis, or treatment guidance.
+        This page hosts the meeting recording area and the summary report for
+        members with approved access.
       </p>
-    </section>
-
-    <section class="section">
-      <div class="card reveal stagger" style="--d: 0.12s;">
-        <h3>No medical advice</h3>
-        <p>
-          Content published by PhysioHead does not replace clinical judgment or individualized care.
-          Healthcare decisions should be made by qualified professionals based on each patient's condition.
-        </p>
+      <div class="hero-actions">
+        <button class="button secondary" type="button" data-access-logout="meeting-01">Log out</button>
       </div>
     </section>
 
     <section class="section">
-      <div class="grid two">
-        <div class="card reveal stagger" style="--d: 0.18s;">
-          <h3>Accuracy and updates</h3>
-          <p>
-            While we aim to keep information current and accurate, PhysioHead makes no warranties regarding
-            completeness, reliability, or fitness for a particular purpose.
-          </p>
+      <div class="materials-stack">
+        <div class="card reveal stagger media-card" style="--d: 0.1s;">
+          <h3>Zoom Recording</h3>
+          <div class="video-embed-wrap">
+            <iframe
+              width="974"
+              height="633"
+              src="https://www.youtube.com/embed/b0tdiDdFbOI"
+              title="Physiohead meeting 8.4.26"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin"
+              allowfullscreen></iframe>
+          </div>
         </div>
-        <div class="card reveal stagger" style="--d: 0.22s;">
-          <h3>External links</h3>
-          <p>
-            External resources are provided for convenience. PhysioHead is not responsible for the content,
-            availability, or practices of third-party websites.
-          </p>
+        <div class="card reveal stagger report-card" style="--d: 0.15s;">
+          <h3>Summary Report</h3>
+          <div class="report-stack">
+            <div class="notice">
+              <strong>Meeting summary</strong>
+              <p>
+                The first meeting confirmed PhysioHead’s initial positioning,
+                reviewed the white paper roadmap, and aligned members on digital
+                infrastructure and the next operational steps.
+              </p>
+            </div>
+            <a class="button secondary" href="assets/docs/meeting-report-2026.pdf" target="_blank" rel="noopener">Open PDF report</a>
+            <ul class="list">
+              <li>Agreement on core scope within physiotherapy, behavioral, and rehabilitative headache care</li>
+              <li>Review of current website structure, member visibility, and protected-resource needs</li>
+              <li>Confirmation of white paper workflow and publication-facing structure</li>
+              <li>Planning of immediate follow-up tasks and next collaborative meeting</li>
+            </ul>
+            <iframe class="report-frame" src="assets/docs/meeting-report-2026.pdf" title="First PhysioHead meeting report"></iframe>
+          </div>
         </div>
       </div>
     </section>
@@ -83,7 +98,6 @@
         <p><a href="funding.html">Funding</a></p>
         <p><a href="white-paper.html">White Paper</a></p>
         <p><a href="updates.html">Updates</a></p>
-        <p><a href="classification.html">ICHD-3 classification</a></p>
         <p><a href="leadership.html">Members</a></p>
       </div>
       <div>
