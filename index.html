@@ -32,27 +32,82 @@
   </header>
 
   <main class="container">
-    <section class="headline-board reveal">
-      <a class="headline-card" href="first-physiohead-meeting.html">
-        <div class="headline-media">
-          <img src="assets/img/illustrations/headline-meeting.png" alt="Screenshot from the first PhysioHead meeting" />
-        </div>
-        <div class="headline-copy">
-          <div class="headline-meta">
-            <span class="pill">Latest announcement</span>
-            <span>April 2026</span>
+    <section class="headline-board reveal" data-headline-carousel>
+      <div class="headline-carousel-track">
+        <a class="headline-card is-active" href="first-physiohead-meeting.html" data-headline-slide>
+          <div class="headline-media">
+            <img src="assets/img/illustrations/headline-meeting.png" alt="Screenshot from the first PhysioHead meeting" />
           </div>
-          <h2>The first PhysioHead meeting has been held</h2>
-          <p>
-            Read the announcement. Access to the detailed meeting materials
-            requires member login.
-          </p>
-          <div class="hero-actions">
-            <span class="button primary">Open announcement</span>
-            <span class="button secondary">All updates</span>
+          <div class="headline-copy">
+            <div class="headline-meta">
+              <span class="pill">Latest announcement</span>
+              <span>April 2026</span>
+            </div>
+            <h2>The first PhysioHead meeting has been held</h2>
+            <p>
+              Read the announcement. Access to the detailed meeting materials
+              requires member login.
+            </p>
+            <div class="hero-actions">
+              <span class="button primary">Open announcement</span>
+              <span class="button secondary">All updates</span>
+            </div>
           </div>
+        </a>
+        <a class="headline-card" href="white-paper.html" data-headline-slide>
+          <div class="headline-media headline-media-copy">
+            <div class="headline-editorial">
+              <span class="headline-kicker">White Paper</span>
+              <strong>Beyond Pharmacology in Chronic Headache Care</strong>
+            </div>
+          </div>
+          <div class="headline-copy">
+            <div class="headline-meta">
+              <span class="pill">Draft</span>
+              <span>Current hub</span>
+            </div>
+            <h2>White paper structure is now available on site</h2>
+            <p>
+              Review the executive summary, proposed figures, and the current
+              publication framework in one place.
+            </p>
+            <div class="hero-actions">
+              <span class="button primary">Open white paper</span>
+            </div>
+          </div>
+        </a>
+        <a class="headline-card" href="funding.html" data-headline-slide>
+          <div class="headline-media headline-media-copy">
+            <div class="headline-editorial">
+              <span class="headline-kicker">Funding</span>
+              <strong>Strategic partnerships and support pathways</strong>
+            </div>
+          </div>
+          <div class="headline-copy">
+            <div class="headline-meta">
+              <span class="pill">Partnerships</span>
+              <span>Open for discussion</span>
+            </div>
+            <h2>Funding priorities have been outlined</h2>
+            <p>
+              See the three practical pillars behind PhysioHead’s funding and
+              partnership model.
+            </p>
+            <div class="hero-actions">
+              <span class="button primary">Open funding page</span>
+            </div>
+          </div>
+        </a>
+      </div>
+      <div class="headline-carousel-controls" aria-label="Headline carousel controls">
+        <button class="headline-arrow" type="button" data-headline-prev aria-label="Previous headline">‹</button>
+        <div class="headline-dots">
+          <button class="headline-dot is-active" type="button" data-headline-dot="0" aria-label="Go to headline 1"></button>
+          <button class="headline-dot" type="button" data-headline-dot="1" aria-label="Go to headline 2"></button>
+          <button class="headline-dot" type="button" data-headline-dot="2" aria-label="Go to headline 3"></button>
         </div>
-      </a>
+        <button class="headline-arrow" type="button" data-headline-next aria-label="Next headline">›</button>
+      </div>
     </section>
 
     <section class="hero reveal">

@@ -206,13 +206,18 @@ main {
 }
 
 .headline-board {
-  margin: 1.2rem 0 1.6rem;
+  margin: 1rem 0 1.35rem;
+  position: relative;
+}
+
+.headline-carousel-track {
+  position: relative;
 }
 
 .headline-card {
-  display: grid;
-  gap: 1rem;
-  padding: 1rem;
+  display: none;
+  gap: 0.8rem;
+  padding: 0.85rem;
   border-radius: var(--radius-lg);
   background:
     radial-gradient(circle at 86% 22%, rgba(215, 236, 255, 0.82), transparent 24%),
@@ -222,9 +227,14 @@ main {
   transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
 }
 
+.headline-card.is-active {
+  display: grid;
+  animation: headlineFade 0.35s ease;
+}
+
 .headline-media {
   width: 100%;
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 16 / 7.8;
   border-radius: 18px;
   background: rgba(255, 255, 255, 0.8);
   border: 1px solid rgba(11, 61, 145, 0.12);
@@ -242,20 +252,57 @@ main {
   display: block;
 }
 
+.headline-media-copy {
+  background:
+    radial-gradient(circle at 78% 20%, rgba(215, 236, 255, 0.9), transparent 26%),
+    linear-gradient(140deg, rgba(11, 61, 145, 0.12), rgba(255, 255, 255, 0.9));
+  padding: 1.35rem;
+}
+
+.headline-editorial {
+  width: 100%;
+  height: 100%;
+  border-radius: 14px;
+  border: 1px solid rgba(11, 61, 145, 0.12);
+  background: rgba(255, 255, 255, 0.72);
+  display: grid;
+  place-content: center;
+  text-align: center;
+  gap: 0.65rem;
+  padding: 1.15rem;
+}
+
+.headline-kicker {
+  font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+  font-size: 0.78rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--forest);
+}
+
+.headline-editorial strong {
+  font-family: "Cormorant Garamond", "Georgia", serif;
+  font-size: clamp(1.7rem, 3.2vw, 2.45rem);
+  line-height: 0.95;
+  color: var(--ink);
+  max-width: 9ch;
+}
+
 .headline-copy {
-  padding: 0.15rem 0.35rem 0.2rem;
+  padding: 0.05rem 0.25rem 0.1rem;
 }
 
 .headline-card h2 {
   margin: 0.45rem 0 0.35rem;
   font-family: "Cormorant Garamond", "Georgia", serif;
-  font-size: clamp(1.9rem, 3vw, 2.7rem);
+  font-size: clamp(1.55rem, 2.45vw, 2.2rem);
   line-height: 1.02;
 }
 
 .headline-card p {
-  margin: 0 0 1rem;
-  max-width: 58ch;
+  margin: 0 0 0.8rem;
+  max-width: 54ch;
+  font-size: 0.98rem;
 }
 
 .headline-card:hover {
@@ -273,6 +320,67 @@ main {
   font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
   font-size: 0.84rem;
   color: rgba(12, 27, 42, 0.72);
+}
+
+.headline-carousel-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 0.75rem;
+  padding: 0 0.2rem;
+}
+
+.headline-arrow {
+  width: 46px;
+  height: 46px;
+  border: 1px solid rgba(11, 61, 145, 0.16);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.82);
+  color: var(--forest);
+  font-size: 1.6rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.headline-arrow:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 24px rgba(12, 27, 42, 0.08);
+  background: rgba(255, 255, 255, 0.96);
+}
+
+.headline-dots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+}
+
+.headline-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  border: 0;
+  background: rgba(11, 61, 145, 0.18);
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.headline-dot.is-active {
+  background: var(--forest);
+  transform: scale(1.15);
+}
+
+@keyframes headlineFade {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .hero-actions {
@@ -1995,7 +2103,15 @@ body.loaded .reveal.stagger {
   }
 
   .headline-card {
-    padding: 0.85rem;
+    padding: 0.75rem;
+  }
+
+  .headline-media {
+    aspect-ratio: 16 / 8.8;
+  }
+
+  .headline-carousel-controls {
+    margin-top: 0.7rem;
   }
 }
 
@@ -2007,5 +2123,26 @@ body.loaded .reveal.stagger {
   .hero-actions {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .headline-arrow {
+    width: 42px;
+    height: 42px;
+  }
+
+  .headline-editorial {
+    padding: 0.9rem;
+  }
+
+  .headline-editorial strong {
+    font-size: 1.6rem;
+  }
+
+  .headline-card h2 {
+    font-size: 1.45rem;
+  }
+
+  .headline-card p {
+    font-size: 0.94rem;
   }
 }
