@@ -98,9 +98,12 @@
           <tr>
             <td class="content-body" align="left" valign="top" style="padding: 40px 40px; color: #0f172a;">
               
-              <!-- Greeting / Introduction (Using Brevo tag fallback) -->
               <p style="margin-top: 0; margin-bottom: 20px; font-size: 16px; line-height: 1.6; font-weight: 500;">
-                Dear {{ contact.FIRSTNAME|default:"PhysioHead Colleague" }},
+                {{ if contact.FIRSTNAME }}
+                  Dear {{ contact.FIRSTNAME }},
+                {{ else }}
+                  Dear PhysioHead Colleague,
+                {{ endif }}
               </p>
 
               <!-- Main Title -->
