@@ -100,7 +100,7 @@
               
               <!-- Greeting / Introduction (Using Brevo tag fallback) -->
               <p style="margin-top: 0; margin-bottom: 20px; font-size: 16px; line-height: 1.6; font-weight: 500;">
-                Dear {{ contact.FIRSTNAME | default("PhysioHead Colleague") }},
+                Dear {{ contact.FIRSTNAME|default:"PhysioHead Colleague" }},
               </p>
 
               <!-- Main Title -->
