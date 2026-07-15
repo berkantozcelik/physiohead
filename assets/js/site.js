@@ -1,6 +1,48 @@
 document.addEventListener('DOMContentLoaded', () => {
   document.body.classList.add('loaded');
 
+  // Add mobile navigation toggle button
+  const navbar = document.querySelector('.navbar');
+  const navLinks = document.querySelector('.nav-links');
+  if (navbar && navLinks) {
+    const toggleBtn = document.createElement('button');
+    toggleBtn.className = 'nav-toggle';
+    toggleBtn.setAttribute('aria-label', 'Toggle navigation menu');
+    toggleBtn.setAttribute('aria-expanded', 'false');
+    toggleBtn.innerHTML = '<span></span><span></span><span></span>';
+    
+    navbar.appendChild(toggleBtn);
+    
+    toggleBtn.addEventListener('click', () => {
+      const isOpen = navLinks.classList.toggle('is-open');
+      toggleBtn.classList.toggle('is-active', isOpen);
+      toggleBtn.setAttribute('aria-expanded', String(isOpen));
+    });
+    
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!navbar.contains(e.target) && navLinks.classList.contains('is-open')) {
+        navLinks.classList.remove('is-open');
+        toggleBtn.classList.remove('is-active');
+        toggleBtn.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
+
+  // Shrink header on scroll
+  const header = document.querySelector('.site-header');
+  if (header) {
+    const handleScroll = () => {
+      if (window.scrollY > 40) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+    };
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+  }
+
   const drawCapsule = (ctx, x, y, length, radius, angle, colors, strokeColor) => {
     ctx.save();
     ctx.translate(x, y);
