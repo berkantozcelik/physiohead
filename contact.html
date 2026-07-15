@@ -57,10 +57,13 @@
         </div>
         <div class="card reveal stagger" style="--d: 0.2s;">
           <h3>Interest form</h3>
+          <div id="success-message" class="notice" style="display: none; background: rgba(27, 95, 138, 0.15); border-left: 4px solid #1b5f8a; margin-bottom: 1.5rem; color: #1b5f8a;">
+            <strong>Thank you!</strong> Your interest form has been successfully submitted. We will contact you shortly.
+          </div>
           <form class="form" action="https://formsubmit.co/physiohead@secretary.net" method="post">
             <input type="hidden" name="_subject" value="PhysioHead Website Contact Form" />
             <input type="hidden" name="_captcha" value="false" />
-            <input type="hidden" name="_next" value="https://gmpsturkiye.pythonanywhere.com/contact.html?submitted=1" />
+            <input type="hidden" name="_next" value="https://physiohead.org/contact.html?submitted=1" />
             <div>
               <label for="name">Full name</label>
               <input id="name" name="name" type="text" placeholder="Your name" required />
@@ -129,5 +132,14 @@
   </footer>
 
   <script src="assets/js/site.js"></script>
+  <script>
+    if (window.location.search.includes('submitted=1')) {
+      const successMsg = document.getElementById('success-message');
+      if (successMsg) {
+        successMsg.style.display = 'block';
+        successMsg.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+  </script>
 </body>
 </html>
