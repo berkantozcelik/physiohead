@@ -1,58 +1,59 @@
 /**
- * PhysioHead - Leadership World Map Mode
- * Pinpoints all 47 individuals and their institutions across the globe.
+ * PhysioHead - Leadership Static World Map Mode
+ * Theme-fitting static vector map pinpointing all 47 members across 22 countries.
+ * Zero external tile dependencies, 100% offline & fast.
  */
 document.addEventListener('DOMContentLoaded', () => {
-  const toggleInput = document.getElementById('map-mode-toggle');
+  const toggleBtn = document.getElementById('map-mode-toggle-btn');
   const gridLabel = document.getElementById('label-grid-mode');
   const mapLabel = document.getElementById('label-map-mode');
-  const toggleBtnLegacy = document.getElementById('toggle-map-btn');
   const mapSection = document.getElementById('leadership-map-section');
   const gridView = document.getElementById('leadership-grid-view');
-  const mapContainer = document.getElementById('world-map');
+  const pinsContainer = document.getElementById('static-map-pins');
 
-  if (!mapSection || !mapContainer) return;
+  if (!mapSection || !gridView) return;
 
+  // Exact coordinates matching the vector world map projection (percentage 0-100)
   const CITY_COORDINATES = {
-    'Milano, Italy': { lat: 45.4642, lng: 9.1900, city: 'Milan', country: 'Italy' },
-    'Milan, Italy': { lat: 45.4642, lng: 9.1900, city: 'Milan', country: 'Italy' },
-    'Rome, Italy': { lat: 41.9028, lng: 12.4964, city: 'Rome', country: 'Italy' },
-    'Parma, Italy': { lat: 44.8015, lng: 10.3279, city: 'Parma', country: 'Italy' },
-    'Mersin, Türkiye': { lat: 36.8121, lng: 34.6415, city: 'Mersin', country: 'Türkiye' },
-    'Yozgat, Türkiye': { lat: 39.8181, lng: 34.8147, city: 'Yozgat', country: 'Türkiye' },
-    'Istanbul, Türkiye': { lat: 41.0082, lng: 28.9784, city: 'Istanbul', country: 'Türkiye' },
-    'Cairo, Egypt': { lat: 30.0444, lng: 31.2357, city: 'Cairo', country: 'Egypt' },
-    'Beni-Suef, Egypt': { lat: 29.0661, lng: 31.0994, city: 'Beni-Suef', country: 'Egypt' },
-    'London, UK': { lat: 51.5074, lng: -0.1278, city: 'London', country: 'United Kingdom' },
-    'Sao Paulo, Brazil': { lat: -23.5505, lng: -46.6333, city: 'São Paulo', country: 'Brazil' },
-    'São Paulo, Brazil': { lat: -23.5505, lng: -46.6333, city: 'São Paulo', country: 'Brazil' },
-    'Recife, Brazil': { lat: -8.0476, lng: -34.8770, city: 'Recife', country: 'Brazil' },
-    'New York, NY, USA': { lat: 40.7128, lng: -74.0060, city: 'New York', country: 'USA' },
-    'Bronx, NY, USA': { lat: 40.8448, lng: -73.8648, city: 'New York (Bronx)', country: 'USA' },
-    'Boston, MA, USA': { lat: 42.3601, lng: -71.0589, city: 'Boston', country: 'USA' },
-    'Winston Salem, NC, USA': { lat: 36.0999, lng: -80.2442, city: 'Winston-Salem', country: 'USA' },
-    'Miami, FL, USA': { lat: 25.7617, lng: -80.1918, city: 'Miami', country: 'USA' },
-    'Brussels, Belgium': { lat: 50.8503, lng: 4.3517, city: 'Brussels', country: 'Belgium' },
-    'Sydney, Australia': { lat: -33.8688, lng: 151.2093, city: 'Sydney', country: 'Australia' },
-    'Melbourne, Australia': { lat: -37.8136, lng: 144.9631, city: 'Melbourne', country: 'Australia' },
-    'Taipei, Taiwan': { lat: 25.0330, lng: 121.5654, city: 'Taipei', country: 'Taiwan' },
-    'Tehran, Iran': { lat: 35.6892, lng: 51.3890, city: 'Tehran', country: 'Iran' },
-    'Tabriz, Iran': { lat: 38.0800, lng: 46.2919, city: 'Tabriz', country: 'Iran' },
-    'Mexico City, Mexico': { lat: 19.4326, lng: -99.1332, city: 'Mexico City', country: 'Mexico' },
-    'Copenhagen, Denmark': { lat: 55.6761, lng: 12.5683, city: 'Copenhagen', country: 'Denmark' },
-    'Athens, Greece': { lat: 37.9838, lng: 23.7275, city: 'Athens', country: 'Greece' },
-    'Seoul, South Korea': { lat: 37.5665, lng: 126.9780, city: 'Seoul', country: 'South Korea' },
-    'Marrakech, Morocco': { lat: 31.6295, lng: -7.9811, city: 'Marrakech', country: 'Morocco' },
-    'Ulaanbaatar, Mongolia': { lat: 47.8864, lng: 106.9057, city: 'Ulaanbaatar', country: 'Mongolia' },
-    'Dar es Salaam, Tanzania': { lat: -6.7924, lng: 39.2083, city: 'Dar es Salaam', country: 'Tanzania' },
-    'Kathmandu, Nepal': { lat: 27.7172, lng: 85.3240, city: 'Kathmandu', country: 'Nepal' },
-    'Baku, Azerbaijan': { lat: 40.4093, lng: 49.8671, city: 'Baku', country: 'Azerbaijan' },
-    'Tokyo, Japan': { lat: 35.6762, lng: 139.6503, city: 'Tokyo', country: 'Japan' },
-    'Berlin, Germany': { lat: 52.5200, lng: 13.4050, city: 'Berlin', country: 'Germany' },
-    'Uppsala, Sweden': { lat: 59.8586, lng: 17.6389, city: 'Uppsala', country: 'Sweden' },
+    'Milano, Italy': { baseX: 51.25, baseY: 23.92, city: 'Milan', country: 'Italy' },
+    'Milan, Italy': { baseX: 51.25, baseY: 23.92, city: 'Milan', country: 'Italy' },
+    'Rome, Italy': { baseX: 52.10, baseY: 26.37, city: 'Rome', country: 'Italy' },
+    'Parma, Italy': { baseX: 51.50, baseY: 24.74, city: 'Parma', country: 'Italy' },
+    'Mersin, Türkiye': { baseX: 58.60, baseY: 29.75, city: 'Mersin', country: 'Türkiye' },
+    'Yozgat, Türkiye': { baseX: 58.25, baseY: 28.00, city: 'Yozgat', country: 'Türkiye' },
+    'Istanbul, Türkiye': { baseX: 56.90, baseY: 26.60, city: 'Istanbul', country: 'Türkiye' },
+    'Cairo, Egypt': { baseX: 57.50, baseY: 34.42, city: 'Cairo', country: 'Egypt' },
+    'Beni-Suef, Egypt': { baseX: 57.50, baseY: 35.59, city: 'Beni-Suef', country: 'Egypt' },
+    'London, UK': { baseX: 48.75, baseY: 19.60, city: 'London', country: 'United Kingdom' },
+    'Sao Paulo, Brazil': { baseX: 36.75, baseY: 67.68, city: 'São Paulo', country: 'Brazil' },
+    'São Paulo, Brazil': { baseX: 36.75, baseY: 67.68, city: 'São Paulo', country: 'Brazil' },
+    'Recife, Brazil': { baseX: 39.75, baseY: 58.34, city: 'Recife', country: 'Brazil' },
+    'New York, NY, USA': { baseX: 30.25, baseY: 27.42, city: 'New York', country: 'USA' },
+    'Bronx, NY, USA': { baseX: 30.30, baseY: 27.19, city: 'New York (Bronx)', country: 'USA' },
+    'Boston, MA, USA': { baseX: 30.90, baseY: 26.25, city: 'Boston', country: 'USA' },
+    'Winston Salem, NC, USA': { baseX: 29.25, baseY: 30.11, city: 'Winston-Salem', country: 'USA' },
+    'Miami, FL, USA': { baseX: 28.75, baseY: 36.76, city: 'Miami', country: 'USA' },
+    'Brussels, Belgium': { baseX: 49.75, baseY: 20.07, city: 'Brussels', country: 'Belgium' },
+    'Sydney, Australia': { baseX: 88.50, baseY: 74.68, city: 'Sydney', country: 'Australia' },
+    'Melbourne, Australia': { baseX: 86.90, baseY: 77.60, city: 'Melbourne', country: 'Australia' },
+    'Taipei, Taiwan': { baseX: 80.60, baseY: 38.27, city: 'Taipei', country: 'Taiwan' },
+    'Tehran, Iran': { baseX: 62.75, baseY: 30.34, city: 'Tehran', country: 'Iran' },
+    'Tabriz, Iran': { baseX: 61.75, baseY: 28.94, city: 'Tabriz', country: 'Iran' },
+    'Mexico City, Mexico': { baseX: 24.00, baseY: 41.42, city: 'Mexico City', country: 'Mexico' },
+    'Copenhagen, Denmark': { baseX: 51.75, baseY: 16.92, city: 'Copenhagen', country: 'Denmark' },
+    'Athens, Greece': { baseX: 55.40, baseY: 29.40, city: 'Athens', country: 'Greece' },
+    'Seoul, South Korea': { baseX: 82.10, baseY: 29.40, city: 'Seoul', country: 'South Korea' },
+    'Marrakech, Morocco': { baseX: 46.75, baseY: 33.26, city: 'Marrakech', country: 'Morocco' },
+    'Ulaanbaatar, Mongolia': { baseX: 76.75, baseY: 21.59, city: 'Ulaanbaatar', country: 'Mongolia' },
+    'Dar es Salaam, Tanzania': { baseX: 59.75, baseY: 57.76, city: 'Dar es Salaam', country: 'Tanzania' },
+    'Kathmandu, Nepal': { baseX: 71.25, baseY: 35.59, city: 'Kathmandu', country: 'Nepal' },
+    'Baku, Azerbaijan': { baseX: 62.10, baseY: 27.54, city: 'Baku', country: 'Azerbaijan' },
+    'Tokyo, Japan': { baseX: 85.60, baseY: 30.11, city: 'Tokyo', country: 'Japan' },
+    'Berlin, Germany': { baseX: 52.25, baseY: 18.90, city: 'Berlin', country: 'Germany' },
+    'Uppsala, Sweden': { baseX: 53.10, baseY: 14.24, city: 'Uppsala', country: 'Sweden' },
   };
 
-  // Extract all members from existing DOM cards to maintain single source of truth
+  // Parse all members from the existing DOM cards to keep single source of truth
   const cardElements = Array.from(document.querySelectorAll('.person-card'));
   const members = [];
   const cityGroups = {};
@@ -68,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const role = roleEl ? roleEl.textContent.trim() : '';
     const affiliation = affEl ? affEl.textContent.trim() : '';
     const photo = photoEl ? photoEl.getAttribute('src') : '';
-    const fallback = fallbackEl ? fallbackEl.textContent.trim() : 'PH';
+    const fallback = fallbackEl ? fallbackEl.textContent.trim() : (name.split(' ').map(n => n[0]).slice(0, 2).join(''));
 
     let locMeta = null;
     for (const [key, val] of Object.entries(CITY_COORDINATES)) {
@@ -84,7 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
       } else if (affiliation.includes('Baku')) {
         locMeta = CITY_COORDINATES['Baku, Azerbaijan'];
       } else {
-        locMeta = { lat: 20, lng: 0, city: 'Global', country: 'International' };
+        locMeta = { baseX: 50.0, baseY: 30.0, city: 'Global', country: 'International' };
       }
     }
 
@@ -102,8 +103,8 @@ document.addEventListener('DOMContentLoaded', () => {
       fallback,
       city: locMeta.city,
       country: locMeta.country,
-      baseLat: locMeta.lat,
-      baseLng: locMeta.lng,
+      baseX: locMeta.baseX,
+      baseY: locMeta.baseY,
       cityKey
     };
 
@@ -111,182 +112,97 @@ document.addEventListener('DOMContentLoaded', () => {
     members.push(memberData);
   });
 
-  // Calculate coordinates with neat separation for cities with multiple members
+  // Calculate separated coordinates for cities with multiple members
   members.forEach((m) => {
     const group = cityGroups[m.cityKey];
     if (group.length === 1) {
-      m.lat = m.baseLat;
-      m.lng = m.baseLng;
+      m.pinX = m.baseX;
+      m.pinY = m.baseY;
     } else {
       const idx = group.indexOf(m);
       const count = group.length;
-      const radius = 0.22; // subtle geographic offset in degrees (~18-22km)
+      const radiusX = 1.15; // horizontal offset %
+      const radiusY = 2.10; // vertical offset %
       const angle = (2 * Math.PI / count) * idx - (Math.PI / 2);
-      m.lat = m.baseLat + radius * Math.sin(angle);
-      const cosLat = Math.cos((m.baseLat * Math.PI) / 180) || 1;
-      m.lng = m.baseLng + (radius / cosLat) * Math.cos(angle);
+      m.pinX = m.baseX + radiusX * Math.cos(angle);
+      m.pinY = m.baseY + radiusY * Math.sin(angle);
     }
   });
 
   // Populate Country Filter Dropdown
   const countrySelect = document.getElementById('map-country-filter');
   if (countrySelect) {
-    const countries = Array.from(new Set(members.map((m) => m.country))).sort();
-    countrySelect.innerHTML = `<option value="all">All Countries (${countries.length})</option>` +
-      countries.map((c) => `<option value="${c}">${c}</option>`).join('');
+    const countryCounts = {};
+    members.forEach((m) => {
+      countryCounts[m.country] = (countryCounts[m.country] || 0) + 1;
+    });
+    const sortedCountries = Object.keys(countryCounts).sort();
+    countrySelect.innerHTML = `<option value="all">All Countries (${sortedCountries.length})</option>` +
+      sortedCountries.map((c) => `<option value="${c}">${c} (${countryCounts[c]})</option>`).join('');
   }
 
-  let map = null;
-  let markersLayer = null;
-  const markerMap = new Map();
-  let isMapInitialized = false;
+  // Render static pins
+  let isPinsRendered = false;
+  const pinElements = new Map();
 
-  function ensureLeaflet(callback) {
-    if (typeof L !== 'undefined') {
-      callback();
-      return;
-    }
-    // Dynamic fallback load from unpkg CDN if local file was blocked or missing
-    console.warn('Leaflet not found in global scope, loading dynamically from CDN...');
-    const link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
-    document.head.appendChild(link);
+  function renderMapPins() {
+    if (isPinsRendered || !pinsContainer) return;
+    pinsContainer.innerHTML = '';
 
-    const script = document.createElement('script');
-    script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
-    script.onload = () => {
-      callback();
-    };
-    script.onerror = () => {
-      console.error('Failed to load Leaflet library.');
-      const loader = document.getElementById('map-loading');
-      if (loader) {
-        loader.innerHTML = '<span style="color:#dc2626;">Failed to load map library. Please check your internet connection and reload.</span>';
-      }
-    };
-    document.head.appendChild(script);
-  }
+    members.forEach((member) => {
+      const pin = document.createElement('div');
+      pin.className = 'static-map-pin';
+      pin.style.left = `${member.pinX}%`;
+      pin.style.top = `${member.pinY}%`;
+      pin.setAttribute('data-id', member.id);
+      pin.setAttribute('tabindex', '0');
+      pin.setAttribute('role', 'button');
+      pin.setAttribute('aria-label', `${member.name}, ${member.city}, ${member.country}`);
 
-  function initMap() {
-    if (isMapInitialized) return;
+      pin.innerHTML = `
+        <div class="pin-avatar-badge">
+          ${
+            member.photo
+              ? `<img src="${member.photo}" alt="${member.name}" class="pin-avatar-img" loading="lazy" />`
+              : `<span class="pin-avatar-fallback">${member.fallback || 'PH'}</span>`
+          }
+        </div>
+        <div class="pin-stem"></div>
+        <div class="pin-dot"></div>
+        <div class="pin-tooltip">
+          <div class="pin-tooltip-location">📍 ${member.city}, ${member.country}</div>
+          <div class="pin-tooltip-name">${member.name}</div>
+          <div class="pin-tooltip-role">${member.role}</div>
+        </div>
+      `;
 
-    ensureLeaflet(() => {
-      if (isMapInitialized || typeof L === 'undefined') return;
-
-      const isMobile = window.innerWidth < 768;
-      const initialCenter = [24, 12];
-      const initialZoom = isMobile ? 1.7 : 2.2;
-
-      // Center map on Mediterranean / Europe / World panorama
-      map = L.map('world-map', {
-        center: initialCenter,
-        zoom: initialZoom,
-        minZoom: 1.2,
-        maxZoom: 18,
-        zoomControl: true,
-        scrollWheelZoom: true,
-        attributionControl: false
+      pin.addEventListener('click', () => {
+        highlightPin(pin);
+        showMemberInDrawer(member);
       });
 
-      // Attribution
-      L.control.attribution({ position: 'bottomright', prefix: false })
-        .addAttribution('&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OSM</a> &copy; <a href="https://carto.com/attributions" target="_blank">CARTO</a>')
-        .addTo(map);
-
-      // Primary Carto Positron Light Tiles + Automatic OSM Fallback
-      const cartoUrl = 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
-      const osmUrl = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
-
-      let activeTileLayer = L.tileLayer(cartoUrl, {
-        subdomains: 'abcd',
-        maxZoom: 19
-      });
-
-      let fallbackUsed = false;
-      activeTileLayer.on('tileerror', () => {
-        if (!fallbackUsed && map) {
-          fallbackUsed = true;
-          console.warn('Primary tile layer error; switching to OpenStreetMap tile server...');
-          map.removeLayer(activeTileLayer);
-          activeTileLayer = L.tileLayer(osmUrl, {
-            maxZoom: 19,
-            attribution: '&copy; OpenStreetMap contributors'
-          }).addTo(map);
+      pin.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          highlightPin(pin);
+          showMemberInDrawer(member);
         }
       });
 
-      // Hide loading spinner once tiles begin loading
-      activeTileLayer.on('load', () => {
-        const loader = document.getElementById('map-loading');
-        if (loader) loader.classList.add('is-hidden');
-      });
-
-      // Fallback timer to hide loader after 1.8s regardless
-      setTimeout(() => {
-        const loader = document.getElementById('map-loading');
-        if (loader) loader.classList.add('is-hidden');
-      }, 1800);
-
-      activeTileLayer.addTo(map);
-
-      markersLayer = L.featureGroup().addTo(map);
-
-      // Add pins for all members
-      members.forEach((member) => {
-        const icon = L.divIcon({
-          className: 'leaflet-member-marker',
-          html: `
-            <div class="member-pin-container" data-id="${member.id}" title="${member.name} (${member.city}, ${member.country})">
-              <div class="member-pin-badge">
-                ${
-                  member.photo
-                    ? `<img src="${member.photo}" alt="${member.name}" class="member-pin-img" loading="lazy" />`
-                    : `<span class="member-pin-fallback">${member.fallback || 'PH'}</span>`
-                }
-              </div>
-              <div class="member-pin-pointer"></div>
-              <div class="member-pin-pulse"></div>
-            </div>
-          `,
-          iconSize: [44, 52],
-          iconAnchor: [22, 50],
-          popupAnchor: [0, -48]
-        });
-
-        const marker = L.marker([member.lat, member.lng], { icon });
-
-        const popupContent = `
-          <div class="map-popup-card">
-            <div class="popup-photo-wrap">
-              ${
-                member.photo
-                  ? `<img src="${member.photo}" alt="${member.name}" />`
-                  : `<div class="popup-fallback">${member.fallback || 'PH'}</div>`
-              }
-            </div>
-            <span class="popup-city-tag">${member.city}, ${member.country}</span>
-            <h4>${member.name}</h4>
-            <p class="popup-role">${member.role}</p>
-            <p class="popup-aff">${member.affiliation}</p>
-          </div>
-        `;
-
-        marker.bindPopup(popupContent, {
-          closeButton: true,
-          className: 'custom-map-popup'
-        });
-
-        marker.on('click', () => {
-          showMemberInDrawer(member);
-        });
-
-        markersLayer.addLayer(marker);
-        markerMap.set(member.id, marker);
-      });
-
-      isMapInitialized = true;
+      pinsContainer.appendChild(pin);
+      pinElements.set(member.id, pin);
     });
+
+    isPinsRendered = true;
+  }
+
+  function highlightPin(activePin) {
+    pinElements.forEach((pin) => {
+      pin.classList.remove('is-active-pin');
+    });
+    if (activePin) {
+      activePin.classList.add('is-active-pin');
+    }
   }
 
   function showMemberInDrawer(member) {
@@ -316,17 +232,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Filter & Search handlers
   function applyFilters() {
-    if (!markersLayer) return;
-
     const countryValue = countrySelect ? countrySelect.value : 'all';
     const searchInput = document.getElementById('map-search-input');
     const query = searchInput ? searchInput.value.toLowerCase().trim() : '';
 
-    const visibleBounds = [];
+    const matchingMembers = [];
 
     members.forEach((m) => {
-      const marker = markerMap.get(m.id);
-      if (!marker) return;
+      const pin = pinElements.get(m.id);
+      if (!pin) return;
 
       const matchesCountry = countryValue === 'all' || m.country === countryValue;
       const matchesQuery = !query ||
@@ -337,28 +251,20 @@ document.addEventListener('DOMContentLoaded', () => {
         m.affiliation.toLowerCase().includes(query);
 
       if (matchesCountry && matchesQuery) {
-        if (!markersLayer.hasLayer(marker)) {
-          markersLayer.addLayer(marker);
-        }
-        visibleBounds.push([m.lat, m.lng]);
+        pin.classList.remove('is-dimmed');
+        pin.classList.add('is-matched');
+        matchingMembers.push(m);
       } else {
-        if (markersLayer.hasLayer(marker)) {
-          markersLayer.removeLayer(marker);
-        }
+        pin.classList.add('is-dimmed');
+        pin.classList.remove('is-matched');
       }
     });
 
-    if (visibleBounds.length > 0 && map) {
-      if (visibleBounds.length === 1) {
-        map.setView(visibleBounds[0], 7, { animate: true });
-        const singleMember = members.find((m) => m.lat === visibleBounds[0][0] && m.lng === visibleBounds[0][1]);
-        if (singleMember) {
-          const marker = markerMap.get(singleMember.id);
-          if (marker) marker.openPopup();
-        }
-      } else {
-        map.fitBounds(visibleBounds, { padding: [50, 50], maxZoom: 8, animate: true });
-      }
+    // If single match found, open its drawer profile
+    if (matchingMembers.length === 1) {
+      const singlePin = pinElements.get(matchingMembers[0].id);
+      highlightPin(singlePin);
+      showMemberInDrawer(matchingMembers[0]);
     }
   }
 
@@ -377,79 +283,51 @@ document.addEventListener('DOMContentLoaded', () => {
       if (countrySelect) countrySelect.value = 'all';
       if (searchInput) searchInput.value = '';
       applyFilters();
-      if (map) {
-        const isMobile = window.innerWidth < 768;
-        map.setView([24, 12], isMobile ? 1.7 : 2.2, { animate: true });
-      }
+      highlightPin(null);
       const drawer = document.getElementById('map-member-drawer');
       if (drawer) drawer.innerHTML = '';
     });
   }
 
-  // View Mode Switch Handler (Sliding toggle switch)
-  function setViewMode(isMap) {
-    if (toggleInput) {
-      toggleInput.checked = isMap;
-      toggleInput.setAttribute('aria-checked', String(isMap));
+  // TRUE TOGGLE BUTTON LOGIC (Pure Button, NO Checkbox)
+  let isMapMode = false;
+
+  function setViewMode(toMaps) {
+    isMapMode = toMaps;
+
+    if (toggleBtn) {
+      toggleBtn.classList.toggle('is-active', isMapMode);
+      toggleBtn.setAttribute('aria-checked', String(isMapMode));
     }
 
     if (gridLabel) {
-      gridLabel.classList.toggle('is-active', !isMap);
+      gridLabel.classList.toggle('is-active', !isMapMode);
     }
     if (mapLabel) {
-      mapLabel.classList.toggle('is-active', isMap);
+      mapLabel.classList.toggle('is-active', isMapMode);
     }
 
-    if (toggleBtnLegacy) {
-      toggleBtnLegacy.setAttribute('aria-pressed', String(isMap));
-      toggleBtnLegacy.classList.toggle('is-active', isMap);
-    }
-
-    if (isMap) {
+    if (isMapMode) {
       mapSection.style.display = 'block';
-      if (gridView) gridView.style.display = 'none';
-
-      // Ensure dimensions are computed after display change
-      requestAnimationFrame(() => {
-        if (!isMapInitialized) {
-          initMap();
-        }
-        if (map) {
-          map.invalidateSize(true);
-          const isMobile = window.innerWidth < 768;
-          map.setView([24, 12], isMobile ? 1.7 : 2.2, { animate: false });
-        }
-      });
-
-      setTimeout(() => {
-        if (map) {
-          map.invalidateSize(true);
-        }
-      }, 150);
-
-      setTimeout(() => {
-        if (map) {
-          map.invalidateSize(true);
-        }
-      }, 350);
+      gridView.style.display = 'none';
+      renderMapPins();
     } else {
       mapSection.style.display = 'none';
-      if (gridView) gridView.style.display = 'block';
+      gridView.style.display = 'block';
     }
   }
 
-  // Bind checkbox change
-  if (toggleInput) {
-    toggleInput.addEventListener('change', () => {
-      setViewMode(toggleInput.checked);
+  // Bind sliding toggle button click
+  if (toggleBtn) {
+    toggleBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      setViewMode(!isMapMode);
     });
   }
 
-  // Bind label clicks to switch modes
+  // Bind clicking on labels
   if (gridLabel) {
-    gridLabel.addEventListener('click', () => {
-      setViewMode(false);
-    });
+    gridLabel.addEventListener('click', () => setViewMode(false));
     gridLabel.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
@@ -459,22 +337,12 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   if (mapLabel) {
-    mapLabel.addEventListener('click', () => {
-      setViewMode(true);
-    });
+    mapLabel.addEventListener('click', () => setViewMode(true));
     mapLabel.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
         setViewMode(true);
       }
-    });
-  }
-
-  // Legacy button listener fallback
-  if (toggleBtnLegacy) {
-    toggleBtnLegacy.addEventListener('click', () => {
-      const current = toggleInput ? toggleInput.checked : (mapSection.style.display === 'block');
-      setViewMode(!current);
     });
   }
 });

@@ -8,7 +8,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="assets/css/leaflet.css" />
   <link rel="stylesheet" href="assets/css/styles.css" />
 </head>
 <body>
@@ -42,15 +41,14 @@
         </p>
       </div>
       <div class="leadership-header-toggle">
-        <div class="sliding-toggle-wrapper">
-          <span class="toggle-mode-text is-grid is-active" id="label-grid-mode" role="button" tabindex="0">👥 Grid</span>
-          <label class="sliding-switch" for="map-mode-toggle" title="Switch between Grid Mode and Map Mode">
-            <input type="checkbox" id="map-mode-toggle" role="switch" aria-checked="false" aria-label="Switch between Grid and Map view" />
-            <span class="sliding-track">
-              <span class="sliding-thumb"></span>
+        <div class="view-toggle-container">
+          <span class="view-toggle-label is-grid is-active" id="label-grid-mode" role="button" tabindex="0">👥 Grid</span>
+          <button type="button" class="sliding-toggle-btn" id="map-mode-toggle-btn" role="switch" aria-checked="false" aria-label="Toggle between Grid and Map view">
+            <span class="toggle-track">
+              <span class="toggle-thumb"></span>
             </span>
-          </label>
-          <span class="toggle-mode-text is-map" id="label-map-mode" role="button" tabindex="0">🗺️ Map Mode</span>
+          </button>
+          <span class="view-toggle-label is-map" id="label-map-mode" role="button" tabindex="0">🗺️ Map Mode</span>
         </div>
       </div>
     </header>
@@ -69,12 +67,10 @@
           <button id="map-reset-btn" class="button secondary map-reset-btn" type="button">Reset View</button>
         </div>
       </div>
-      <div class="world-map-wrap">
-        <div id="world-map" class="world-map" style="width: 100%; height: 600px; min-height: 520px; position: relative;">
-          <div id="map-loading" class="map-loading-indicator">
-            <div class="map-spinner"></div>
-            <span>Loading interactive world map...</span>
-          </div>
+      <div class="static-world-map-wrap">
+        <div class="static-world-map-stage" id="static-world-map-stage">
+          <img src="assets/img/world-map.svg" class="world-map-svg-img" alt="PhysioHead Global Members Map" draggable="false" />
+          <div id="static-map-pins" class="static-map-pins-layer"></div>
         </div>
       </div>
       <div id="map-member-drawer" class="map-member-drawer" aria-live="polite"></div>
@@ -664,12 +660,6 @@
   </footer>
 
   <script src="assets/js/site.js"></script>
-  <script src="assets/js/leaflet.js"></script>
-  <script>
-    if (typeof L === 'undefined') {
-      document.write('<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"><\/script>');
-    }
-  </script>
   <script src="assets/js/leadership-map.js"></script>
 </body>
 </html>
