@@ -152,23 +152,22 @@ document.addEventListener('DOMContentLoaded', () => {
     members.forEach((member) => {
       const pin = document.createElement('div');
       pin.className = 'static-map-pin';
-      pin.style.left = `${member.pinX}%`;
-      pin.style.top = `${member.pinY}%`;
+      pin.style.cssText = `position: absolute; left: ${member.pinX}%; top: ${member.pinY}%; width: 32px; height: 38px; transform: translate(-50%, -100%); cursor: pointer; z-index: 10; outline: none;`;
       pin.setAttribute('data-id', member.id);
       pin.setAttribute('tabindex', '0');
       pin.setAttribute('role', 'button');
       pin.setAttribute('aria-label', `${member.name}, ${member.city}, ${member.country}`);
 
       pin.innerHTML = `
-        <div class="pin-avatar-badge">
+        <div class="pin-avatar-badge" style="width: 32px; height: 32px; border-radius: 50%; border: 2px solid #0d9488; background: #ffffff; overflow: hidden; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(11, 61, 145, 0.28); box-sizing: border-box;">
           ${
             member.photo
-              ? `<img src="${member.photo}" alt="${member.name}" class="pin-avatar-img" loading="lazy" />`
-              : `<span class="pin-avatar-fallback">${member.fallback || 'PH'}</span>`
+              ? `<img src="${member.photo}" alt="${member.name}" class="pin-avatar-img" style="width: 32px; height: 32px; max-width: 32px; max-height: 32px; object-fit: cover; display: block; border-radius: 50%;" loading="lazy" />`
+              : `<span class="pin-avatar-fallback" style="font-size: 0.72rem; font-weight: 700; color: #0d9488;">${member.fallback || 'PH'}</span>`
           }
         </div>
-        <div class="pin-stem"></div>
-        <div class="pin-dot"></div>
+        <div class="pin-stem" style="width: 0; height: 0; border-left: 4px solid transparent; border-right: 4px solid transparent; border-top: 6px solid #0d9488; margin: 0 auto;"></div>
+        <div class="pin-dot" style="width: 6px; height: 6px; background: #0d9488; border-radius: 50%; margin: -2px auto 0;"></div>
         <div class="pin-tooltip">
           <div class="pin-tooltip-location">📍 ${member.city}, ${member.country}</div>
           <div class="pin-tooltip-name">${member.name}</div>

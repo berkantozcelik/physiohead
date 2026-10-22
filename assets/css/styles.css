@@ -2180,7 +2180,6 @@ main {
 .tier-tree li:hover > .tier-item {
   color: var(--forest);
 }
-}
 
 .footer {
   padding: 4rem 1.5rem;
