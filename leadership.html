@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/leaflet.css" />
   <link rel="stylesheet" href="assets/css/styles.css" />
 </head>
 <body>
@@ -32,14 +33,43 @@
   </header>
 
   <main class="container">
-    <header class="page-header reveal">
-      <h1>Members &amp; Governance</h1>
-      <p>
-        PhysioHead is coordinated by multidisciplinary leaders across neurology, physiotherapy,
-        psychology, and allied health. The list below reflects confirmed members.
-      </p>
+    <header class="page-header reveal leadership-header">
+      <div class="leadership-header-text">
+        <h1>Members &amp; Governance</h1>
+        <p>
+          PhysioHead is coordinated by multidisciplinary leaders across neurology, physiotherapy,
+          psychology, and allied health. The list below reflects confirmed members.
+        </p>
+      </div>
+      <div class="leadership-header-toggle">
+        <button id="toggle-map-btn" class="button secondary view-toggle-button" type="button" aria-pressed="false">
+          <span class="view-toggle-icon">🗺️</span>
+          <span class="view-toggle-text">Switch to Map Mode</span>
+        </button>
+      </div>
     </header>
 
+    <section id="leadership-map-section" class="leadership-map-section" style="display: none;">
+      <div class="map-toolbar">
+        <div class="map-stats">
+          <h3>World View of Organisation</h3>
+          <span class="map-stats-pill">📍 47 Members · 22 Countries · 6 Continents</span>
+        </div>
+        <div class="map-filters">
+          <input type="search" id="map-search-input" class="map-input" placeholder="Search member, city..." aria-label="Search members on map" />
+          <select id="map-country-filter" class="map-select" aria-label="Filter by country">
+            <option value="all">All Countries</option>
+          </select>
+          <button id="map-reset-btn" class="button secondary map-reset-btn" type="button">Reset View</button>
+        </div>
+      </div>
+      <div class="world-map-wrap">
+        <div id="world-map" class="world-map"></div>
+      </div>
+      <div id="map-member-drawer" class="map-member-drawer" aria-live="polite"></div>
+    </section>
+
+    <div id="leadership-grid-view">
     <section class="section">
       <h2>SIG Co-Chairs</h2>
       <div class="people-grid">
@@ -588,6 +618,7 @@
         </p>
       </div>
     </section>
+    </div>
   </main>
 
   <footer class="footer">
@@ -622,5 +653,7 @@
   </footer>
 
   <script src="assets/js/site.js"></script>
+  <script src="assets/js/leaflet.js"></script>
+  <script src="assets/js/leadership-map.js"></script>
 </body>
 </html>
