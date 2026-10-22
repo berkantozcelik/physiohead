@@ -3,12 +3,15 @@
  * Pinpoints all 47 individuals and their institutions across the globe.
  */
 document.addEventListener('DOMContentLoaded', () => {
-  const toggleBtn = document.getElementById('toggle-map-btn');
+  const toggleInput = document.getElementById('map-mode-toggle');
+  const gridLabel = document.getElementById('label-grid-mode');
+  const mapLabel = document.getElementById('label-map-mode');
+  const toggleBtnLegacy = document.getElementById('toggle-map-btn');
   const mapSection = document.getElementById('leadership-map-section');
   const gridView = document.getElementById('leadership-grid-view');
   const mapContainer = document.getElementById('world-map');
 
-  if (!toggleBtn || !mapSection || !mapContainer) return;
+  if (!mapSection || !mapContainer) return;
 
   const CITY_COORDINATES = {
     'Milano, Italy': { lat: 45.4642, lng: 9.1900, city: 'Milan', country: 'Italy' },
@@ -138,91 +141,153 @@ document.addEventListener('DOMContentLoaded', () => {
   const markerMap = new Map();
   let isMapInitialized = false;
 
-  function initMap() {
-    if (isMapInitialized || typeof L === 'undefined') return;
+  function ensureLeaflet(callback) {
+    if (typeof L !== 'undefined') {
+      callback();
+      return;
+    }
+    // Dynamic fallback load from unpkg CDN if local file was blocked or missing
+    console.warn('Leaflet not found in global scope, loading dynamically from CDN...');
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+    document.head.appendChild(link);
 
-    // Center map around Mediterranean / Europe / Global view initially
-    map = L.map('world-map', {
-      center: [28, 15],
-      zoom: 2.3,
-      minZoom: 1.8,
-      maxZoom: 16,
-      zoomControl: true,
-      scrollWheelZoom: true,
-      attributionControl: false
-    });
-
-    // Custom attribution control (minimalist)
-    L.control.attribution({ position: 'bottomright', prefix: false })
-      .addAttribution('&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OSM</a> &copy; <a href="https://carto.com/attributions" target="_blank">CARTO</a>')
-      .addTo(map);
-
-    // Clean, modern, scientific Positron light tile layer
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-      subdomains: 'abcd',
-      maxZoom: 19
-    }).addTo(map);
-
-    markersLayer = L.featureGroup().addTo(map);
-
-    // Add pins for all members
-    members.forEach((member) => {
-      const icon = L.divIcon({
-        className: 'leaflet-member-marker',
-        html: `
-          <div class="member-pin-container" data-id="${member.id}" title="${member.name} (${member.city}, ${member.country})">
-            <div class="member-pin-badge">
-              ${
-                member.photo
-                  ? `<img src="${member.photo}" alt="${member.name}" class="member-pin-img" loading="lazy" />`
-                  : `<span class="member-pin-fallback">${member.fallback || 'PH'}</span>`
-              }
-            </div>
-            <div class="member-pin-pointer"></div>
-            <div class="member-pin-pulse"></div>
-          </div>
-        `,
-        iconSize: [44, 52],
-        iconAnchor: [22, 50],
-        popupAnchor: [0, -48]
-      });
-
-      const marker = L.marker([m_lat(member), m_lng(member)], { icon });
-
-      const popupContent = `
-        <div class="map-popup-card">
-          <div class="popup-photo-wrap">
-            ${
-              member.photo
-                ? `<img src="${member.photo}" alt="${member.name}" />`
-                : `<div class="popup-fallback">${member.fallback || 'PH'}</div>`
-            }
-          </div>
-          <span class="popup-city-tag">${member.city}, ${member.country}</span>
-          <h4>${member.name}</h4>
-          <p class="popup-role">${member.role}</p>
-          <p class="popup-aff">${member.affiliation}</p>
-        </div>
-      `;
-
-      marker.bindPopup(popupContent, {
-        closeButton: true,
-        className: 'custom-map-popup'
-      });
-
-      marker.on('click', () => {
-        showMemberInDrawer(member);
-      });
-
-      markersLayer.addLayer(marker);
-      markerMap.set(member.id, marker);
-    });
-
-    isMapInitialized = true;
+    const script = document.createElement('script');
+    script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+    script.onload = () => {
+      callback();
+    };
+    script.onerror = () => {
+      console.error('Failed to load Leaflet library.');
+      const loader = document.getElementById('map-loading');
+      if (loader) {
+        loader.innerHTML = '<span style="color:#dc2626;">Failed to load map library. Please check your internet connection and reload.</span>';
+      }
+    };
+    document.head.appendChild(script);
   }
 
-  function m_lat(m) { return m.lat; }
-  function m_lng(m) { return m.lng; }
+  function initMap() {
+    if (isMapInitialized) return;
+
+    ensureLeaflet(() => {
+      if (isMapInitialized || typeof L === 'undefined') return;
+
+      const isMobile = window.innerWidth < 768;
+      const initialCenter = [24, 12];
+      const initialZoom = isMobile ? 1.7 : 2.2;
+
+      // Center map on Mediterranean / Europe / World panorama
+      map = L.map('world-map', {
+        center: initialCenter,
+        zoom: initialZoom,
+        minZoom: 1.2,
+        maxZoom: 18,
+        zoomControl: true,
+        scrollWheelZoom: true,
+        attributionControl: false
+      });
+
+      // Attribution
+      L.control.attribution({ position: 'bottomright', prefix: false })
+        .addAttribution('&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OSM</a> &copy; <a href="https://carto.com/attributions" target="_blank">CARTO</a>')
+        .addTo(map);
+
+      // Primary Carto Positron Light Tiles + Automatic OSM Fallback
+      const cartoUrl = 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
+      const osmUrl = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
+
+      let activeTileLayer = L.tileLayer(cartoUrl, {
+        subdomains: 'abcd',
+        maxZoom: 19
+      });
+
+      let fallbackUsed = false;
+      activeTileLayer.on('tileerror', () => {
+        if (!fallbackUsed && map) {
+          fallbackUsed = true;
+          console.warn('Primary tile layer error; switching to OpenStreetMap tile server...');
+          map.removeLayer(activeTileLayer);
+          activeTileLayer = L.tileLayer(osmUrl, {
+            maxZoom: 19,
+            attribution: '&copy; OpenStreetMap contributors'
+          }).addTo(map);
+        }
+      });
+
+      // Hide loading spinner once tiles begin loading
+      activeTileLayer.on('load', () => {
+        const loader = document.getElementById('map-loading');
+        if (loader) loader.classList.add('is-hidden');
+      });
+
+      // Fallback timer to hide loader after 1.8s regardless
+      setTimeout(() => {
+        const loader = document.getElementById('map-loading');
+        if (loader) loader.classList.add('is-hidden');
+      }, 1800);
+
+      activeTileLayer.addTo(map);
+
+      markersLayer = L.featureGroup().addTo(map);
+
+      // Add pins for all members
+      members.forEach((member) => {
+        const icon = L.divIcon({
+          className: 'leaflet-member-marker',
+          html: `
+            <div class="member-pin-container" data-id="${member.id}" title="${member.name} (${member.city}, ${member.country})">
+              <div class="member-pin-badge">
+                ${
+                  member.photo
+                    ? `<img src="${member.photo}" alt="${member.name}" class="member-pin-img" loading="lazy" />`
+                    : `<span class="member-pin-fallback">${member.fallback || 'PH'}</span>`
+                }
+              </div>
+              <div class="member-pin-pointer"></div>
+              <div class="member-pin-pulse"></div>
+            </div>
+          `,
+          iconSize: [44, 52],
+          iconAnchor: [22, 50],
+          popupAnchor: [0, -48]
+        });
+
+        const marker = L.marker([member.lat, member.lng], { icon });
+
+        const popupContent = `
+          <div class="map-popup-card">
+            <div class="popup-photo-wrap">
+              ${
+                member.photo
+                  ? `<img src="${member.photo}" alt="${member.name}" />`
+                  : `<div class="popup-fallback">${member.fallback || 'PH'}</div>`
+              }
+            </div>
+            <span class="popup-city-tag">${member.city}, ${member.country}</span>
+            <h4>${member.name}</h4>
+            <p class="popup-role">${member.role}</p>
+            <p class="popup-aff">${member.affiliation}</p>
+          </div>
+        `;
+
+        marker.bindPopup(popupContent, {
+          closeButton: true,
+          className: 'custom-map-popup'
+        });
+
+        marker.on('click', () => {
+          showMemberInDrawer(member);
+        });
+
+        markersLayer.addLayer(marker);
+        markerMap.set(member.id, marker);
+      });
+
+      isMapInitialized = true;
+    });
+  }
 
   function showMemberInDrawer(member) {
     const drawer = document.getElementById('map-member-drawer');
@@ -313,49 +378,103 @@ document.addEventListener('DOMContentLoaded', () => {
       if (searchInput) searchInput.value = '';
       applyFilters();
       if (map) {
-        map.setView([28, 15], 2.3, { animate: true });
+        const isMobile = window.innerWidth < 768;
+        map.setView([24, 12], isMobile ? 1.7 : 2.2, { animate: true });
       }
       const drawer = document.getElementById('map-member-drawer');
       if (drawer) drawer.innerHTML = '';
     });
   }
 
-  // Toggle button click listener
-  let isMapMode = false;
+  // View Mode Switch Handler (Sliding toggle switch)
+  function setViewMode(isMap) {
+    if (toggleInput) {
+      toggleInput.checked = isMap;
+      toggleInput.setAttribute('aria-checked', String(isMap));
+    }
 
-  toggleBtn.addEventListener('click', () => {
-    isMapMode = !isMapMode;
-    toggleBtn.setAttribute('aria-pressed', String(isMapMode));
-    toggleBtn.classList.toggle('is-active', isMapMode);
+    if (gridLabel) {
+      gridLabel.classList.toggle('is-active', !isMap);
+    }
+    if (mapLabel) {
+      mapLabel.classList.toggle('is-active', isMap);
+    }
 
-    const toggleText = toggleBtn.querySelector('.view-toggle-text');
-    const toggleIcon = toggleBtn.querySelector('.view-toggle-icon');
+    if (toggleBtnLegacy) {
+      toggleBtnLegacy.setAttribute('aria-pressed', String(isMap));
+      toggleBtnLegacy.classList.toggle('is-active', isMap);
+    }
 
-    if (isMapMode) {
-      if (toggleText) toggleText.textContent = 'Switch to Grid Mode';
-      if (toggleIcon) toggleIcon.textContent = '👥';
-
+    if (isMap) {
       mapSection.style.display = 'block';
       if (gridView) gridView.style.display = 'none';
 
-      if (!isMapInitialized) {
-        initMap();
-      }
+      // Ensure dimensions are computed after display change
+      requestAnimationFrame(() => {
+        if (!isMapInitialized) {
+          initMap();
+        }
+        if (map) {
+          map.invalidateSize(true);
+          const isMobile = window.innerWidth < 768;
+          map.setView([24, 12], isMobile ? 1.7 : 2.2, { animate: false });
+        }
+      });
 
       setTimeout(() => {
         if (map) {
-          map.invalidateSize();
-          if (markersLayer && markersLayer.getLayers().length > 0) {
-            map.fitBounds(markersLayer.getBounds().pad(0.1));
-          }
+          map.invalidateSize(true);
         }
       }, 150);
-    } else {
-      if (toggleText) toggleText.textContent = 'Switch to Map Mode';
-      if (toggleIcon) toggleIcon.textContent = '🗺️';
 
+      setTimeout(() => {
+        if (map) {
+          map.invalidateSize(true);
+        }
+      }, 350);
+    } else {
       mapSection.style.display = 'none';
       if (gridView) gridView.style.display = 'block';
     }
-  });
+  }
+
+  // Bind checkbox change
+  if (toggleInput) {
+    toggleInput.addEventListener('change', () => {
+      setViewMode(toggleInput.checked);
+    });
+  }
+
+  // Bind label clicks to switch modes
+  if (gridLabel) {
+    gridLabel.addEventListener('click', () => {
+      setViewMode(false);
+    });
+    gridLabel.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        setViewMode(false);
+      }
+    });
+  }
+
+  if (mapLabel) {
+    mapLabel.addEventListener('click', () => {
+      setViewMode(true);
+    });
+    mapLabel.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        setViewMode(true);
+      }
+    });
+  }
+
+  // Legacy button listener fallback
+  if (toggleBtnLegacy) {
+    toggleBtnLegacy.addEventListener('click', () => {
+      const current = toggleInput ? toggleInput.checked : (mapSection.style.display === 'block');
+      setViewMode(!current);
+    });
+  }
 });
