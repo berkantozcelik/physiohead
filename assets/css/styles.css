@@ -548,14 +548,15 @@ main {
   margin-bottom: 4rem;
 }
 
+/* Open section: sits on the page background, separated by spacing and a hairline divider */
 .section-card {
-  background: var(--paper);
-  border: 1px solid var(--line);
-  border-top: 4px solid var(--clay); /* thin blue line */
-  border-radius: var(--radius-lg);
-  padding: 3rem;
+  background: none;
+  border: 0;
+  border-top: 1px solid var(--line);
+  border-radius: 0;
+  padding: 3rem 0 0;
   margin-bottom: 4rem;
-  box-shadow: var(--shadow);
+  box-shadow: none;
 }
 
 .section h2 {
@@ -1104,13 +1105,9 @@ main {
   margin-top: 2rem;
   min-height: 640px;
   --radius: 250px;
-  border-radius: var(--radius-lg);
-  background: radial-gradient(circle at 30% 20%, rgba(14, 165, 233, 0.08), transparent 50%),
-    radial-gradient(circle at 70% 70%, rgba(13, 148, 136, 0.1), transparent 45%),
-    var(--paper);
-  border: 1px solid var(--line);
+  /* open canvas: soft tint only, no box */
+  background: radial-gradient(circle at 50% 50%, rgba(14, 165, 233, 0.07), transparent 60%);
   overflow: hidden;
-  box-shadow: var(--shadow);
 }
 
 .flower::after {
@@ -1196,8 +1193,8 @@ main {
   background: rgba(255, 255, 255, 0.75);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  border: 1px solid var(--line);
-  box-shadow: var(--shadow);
+  border: 1px solid var(--line-hover);
+  box-shadow: none;
   font-family: var(--font-sans);
   font-weight: 500;
   font-size: 0.92rem;
@@ -1255,7 +1252,8 @@ main {
 @media (max-width: 1000px) {
   .flower {
     min-height: auto;
-    padding: 1.5rem;
+    padding: 0;
+    background: none;
     display: grid;
     gap: 1rem;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -1270,8 +1268,11 @@ main {
     transform: none;
     width: auto;
     height: auto;
-    border-radius: 16px;
-    padding: 1rem;
+    border: 0;
+    border-radius: 0;
+    background: none;
+    box-shadow: none;
+    padding: 0.5rem 0 1rem;
     grid-column: 1 / -1;
     text-align: center;
   }
@@ -1288,6 +1289,13 @@ main {
     position: static;
     transform: none;
     width: auto;
+  }
+
+  .flower-more {
+    position: static;
+    grid-column: 1 / -1;
+    justify-self: end;
+    box-shadow: none;
   }
 }
 
@@ -2583,6 +2591,37 @@ body.loaded .reveal.stagger {
     gap: 0.75rem;
   }
 
+  /* Phone header: logo, CTA and menu toggle on one row without overflow */
+  .navbar,
+  .site-header.scrolled .navbar {
+    padding: 0.7rem 1rem;
+    gap: 0.5rem;
+  }
+
+  .brand {
+    flex-shrink: 1;
+    min-width: 0;
+  }
+
+  .brand img,
+  .site-header.scrolled .brand img {
+    height: 40px;
+    max-width: 100%;
+  }
+
+  .navbar > .nav-cta {
+    flex-shrink: 0;
+    font-size: 0.72rem;
+    padding: 0.42rem 0.75rem;
+    margin-right: 0;
+    box-shadow: none;
+  }
+
+  .nav-toggle {
+    flex-shrink: 0;
+    padding: 0.4rem;
+  }
+
   .hero-actions {
     flex-direction: column;
     align-items: flex-start;
@@ -2607,6 +2646,19 @@ body.loaded .reveal.stagger {
 
   .headline-card p {
     font-size: 0.94rem;
+  }
+}
+
+/* Very narrow phones: shorten the CTA label so the header still fits */
+@media (max-width: 370px) {
+  .navbar > .nav-cta {
+    font-size: 0;
+    padding: 0.42rem 0.8rem;
+  }
+
+  .navbar > .nav-cta::before {
+    content: "Join the SIG";
+    font-size: 0.72rem;
   }
 }
 
@@ -2826,7 +2878,6 @@ body.loaded .reveal.stagger {
 .static-world-map-stage {
   position: relative;
   width: 100%;
-  min-width: 860px;
   aspect-ratio: 2000 / 857;
   user-select: none;
   background: radial-gradient(ellipse at 50% 50%, #f0f7ff 0%, #f8fafc 100%);
@@ -3082,3 +3133,453 @@ body.loaded .reveal.stagger {
   }
 }
 
+
+/* ==========================================================================
+   Members map: zoom & pan
+   ========================================================================== */
+.map-frame {
+  position: relative;
+}
+
+.static-world-map-wrap.is-zoomable {
+  overflow: auto;
+  touch-action: pan-x pan-y;
+  overscroll-behavior: contain;
+  cursor: grab;
+}
+
+.static-world-map-wrap.is-zoomable.is-dragging {
+  cursor: grabbing;
+  user-select: none;
+}
+
+.static-world-map-wrap.is-zoomable .static-world-map-stage {
+  aspect-ratio: auto;
+  max-width: none;
+}
+
+.map-zoom-controls {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--line-hover);
+  border-radius: 10px;
+  background: var(--paper);
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.1);
+  overflow: hidden;
+  z-index: 20;
+}
+
+.map-zoom-btn {
+  width: 38px;
+  height: 38px;
+  border: 0;
+  background: var(--paper);
+  color: var(--forest);
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+  font-family: var(--font-sans);
+}
+
+.map-zoom-btn + .map-zoom-btn {
+  border-top: 1px solid var(--line);
+}
+
+.map-zoom-btn:hover:not(:disabled) {
+  background: var(--sun);
+}
+
+.map-zoom-btn:disabled {
+  color: #cbd5e1;
+  cursor: default;
+}
+
+.map-zoom-btn:focus-visible {
+  outline: 2px solid var(--sea);
+  outline-offset: -2px;
+}
+
+.map-zoom-fit {
+  font-size: 1rem;
+}
+
+.map-zoom-hint {
+  margin: 0.5rem 0 0;
+  font-size: 0.78rem;
+  color: var(--ink-muted);
+  text-align: right;
+}
+
+/* ==========================================================================
+   Activities hub: tabs + webinar player
+   ========================================================================== */
+.activity-hub {
+  margin-top: 3rem;
+  scroll-margin-top: 120px;
+}
+
+.hub-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 250px;
+  gap: 2rem;
+  align-items: start;
+}
+
+/* Tabs sit on the right on wide screens */
+.hub-tabs {
+  order: 2;
+  position: sticky;
+  top: 110px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding-left: 1.25rem;
+  border-left: 1px solid var(--line-hover);
+}
+
+.hub-panels {
+  order: 1;
+  min-width: 0;
+}
+
+.hub-tab {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  width: 100%;
+  padding: 0.75rem 0.9rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  background: none;
+  color: var(--ink-muted);
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.hub-tab:hover {
+  color: var(--forest);
+  background: rgba(11, 61, 145, 0.04);
+}
+
+.hub-tab.is-active {
+  color: var(--forest);
+  background: var(--paper);
+  border-color: var(--line-hover);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
+}
+
+.hub-tab:focus-visible {
+  outline: 2px solid var(--sea);
+  outline-offset: 2px;
+}
+
+.hub-tab-icon svg {
+  width: 22px;
+  height: 22px;
+  display: block;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.hub-tab-label {
+  flex: 1;
+}
+
+.hub-tab-count {
+  min-width: 1.6rem;
+  padding: 0.1rem 0.5rem;
+  border-radius: 99px;
+  background: rgba(13, 148, 136, 0.1);
+  color: var(--sea);
+  font-size: 0.75rem;
+  text-align: center;
+}
+
+.hub-tab-count.is-soon {
+  background: var(--sun);
+  color: var(--spruce);
+}
+
+.hub-panel[hidden] {
+  display: none;
+}
+
+.hub-panel {
+  animation: mapFadeIn 0.3s ease;
+}
+
+.hub-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Webinar card */
+.video-card {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--paper);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.video-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--line-hover);
+}
+
+.video-card:focus-visible {
+  outline: 2px solid var(--sea);
+  outline-offset: 3px;
+}
+
+.video-thumb {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 9;
+  background: #0f172a;
+  overflow: hidden;
+}
+
+.video-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.video-card:hover .video-thumb img {
+  transform: scale(1.04);
+}
+
+.video-play {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 62px;
+  height: 62px;
+  margin: -31px 0 0 -31px;
+  border-radius: 50%;
+  background: rgba(11, 61, 145, 0.88);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.35);
+  transition: transform 0.25s ease, background 0.25s ease;
+}
+
+.video-play svg {
+  width: 26px;
+  height: 26px;
+  margin-left: 3px;
+  fill: #fff;
+}
+
+.video-card:hover .video-play {
+  transform: scale(1.08);
+  background: var(--sea);
+}
+
+.video-duration {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  padding: 0.15rem 0.5rem;
+  border-radius: 6px;
+  background: rgba(15, 23, 42, 0.8);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 600;
+  font-family: var(--font-sans);
+}
+
+.video-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  padding: 1.25rem 1.4rem 1.4rem;
+}
+
+.video-series {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--sea);
+  font-family: var(--font-sans);
+}
+
+.video-title {
+  font-family: var(--font-sans);
+  font-size: 1.2rem;
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--forest);
+}
+
+.video-action {
+  margin-top: 0.3rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--sea);
+  font-family: var(--font-sans);
+}
+
+/* Coming soon panel */
+.hub-soon {
+  max-width: 560px;
+  padding: 2.5rem 0;
+}
+
+.hub-soon .pill {
+  background: var(--sun);
+  border-color: rgba(14, 165, 233, 0.25);
+  color: var(--spruce);
+  font-weight: 600;
+}
+
+.hub-soon h3 {
+  margin: 1rem 0 0.6rem;
+  font-family: var(--font-title);
+  font-size: 1.9rem;
+  color: var(--forest);
+  line-height: 1.2;
+}
+
+.hub-soon p {
+  margin: 0 0 1.5rem;
+  color: var(--ink-muted);
+}
+
+/* Video player dialog */
+.video-dialog {
+  width: min(1000px, calc(100vw - 2rem));
+  max-height: calc(100vh - 2rem);
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-md);
+  background: #0f172a;
+  color: #fff;
+  overflow: hidden;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+}
+
+.video-dialog::backdrop {
+  background: rgba(15, 23, 42, 0.78);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.video-dialog-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.8rem 0.9rem 0.8rem 1.2rem;
+}
+
+.video-dialog-head h3 {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.video-dialog-close {
+  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.video-dialog-close:hover {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.video-frame {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: #000;
+}
+
+.video-frame iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.video-dialog-link {
+  display: block;
+  padding: 0.7rem 1.2rem;
+  font-size: 0.85rem;
+  color: #cbd5e1;
+  text-align: right;
+}
+
+.video-dialog-link:hover {
+  color: #fff;
+}
+
+body.has-video-open {
+  overflow: hidden;
+}
+
+@media (max-width: 860px) {
+  .hub-layout {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  /* Tabs become a scrollable row above the content */
+  .hub-tabs {
+    order: 0;
+    position: static;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 0 0 0.75rem;
+    border-left: 0;
+    border-bottom: 1px solid var(--line-hover);
+  }
+
+  .hub-tab {
+    width: auto;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.88rem;
+    white-space: nowrap;
+  }
+
+  .hub-panels {
+    order: 1;
+  }
+}

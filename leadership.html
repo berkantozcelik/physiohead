@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="assets/css/styles.css?v=20261022-static-map-v2" />
+  <link rel="stylesheet" href="assets/css/styles.css?v=20261109" />
   <style>
     /* Guaranteed styles for Static Map, Pins, and Toggle (immune to external CSS caching) */
     .view-toggle-container {
@@ -87,7 +87,6 @@
     .static-world-map-stage {
       position: relative;
       width: 100%;
-      min-width: 860px;
       aspect-ratio: 2000 / 857;
       user-select: none;
       background: radial-gradient(ellipse at 50% 50%, #f0f7ff 0%, #f8fafc 100%);
@@ -268,11 +267,19 @@
           <button id="map-reset-btn" class="button secondary map-reset-btn" type="button">Reset View</button>
         </div>
       </div>
-      <div class="static-world-map-wrap">
-        <div class="static-world-map-stage" id="static-world-map-stage">
-          <img src="assets/img/world-map.svg" class="world-map-svg-img" alt="PhysioHead Global Members Map" draggable="false" />
-          <div id="static-map-pins" class="static-map-pins-layer"></div>
+      <div class="map-frame">
+        <div class="static-world-map-wrap" id="static-world-map-wrap">
+          <div class="static-world-map-stage" id="static-world-map-stage">
+            <img src="assets/img/world-map.svg" class="world-map-svg-img" alt="PhysioHead Global Members Map" draggable="false" />
+            <div id="static-map-pins" class="static-map-pins-layer"></div>
+          </div>
         </div>
+        <div class="map-zoom-controls" role="group" aria-label="Map zoom">
+          <button type="button" class="map-zoom-btn" id="map-zoom-in" aria-label="Zoom in">+</button>
+          <button type="button" class="map-zoom-btn" id="map-zoom-out" aria-label="Zoom out">&minus;</button>
+          <button type="button" class="map-zoom-btn map-zoom-fit" id="map-zoom-fit" aria-label="Show whole world" title="Show whole world">&#x2922;</button>
+        </div>
+        <p class="map-zoom-hint">Pinch or Ctrl + scroll to zoom &middot; drag to move &middot; double-click to zoom in</p>
       </div>
       <div id="map-member-drawer" class="map-member-drawer" aria-live="polite"></div>
     </section>
@@ -398,7 +405,7 @@
         </div>
         <div class="person-card reveal stagger" style="--d: 0.2s;">
           <div class="person-photo">
-            <img src="assets/img/names/Dawn-Buse.png" alt="Dawn Buse" />
+            <img src="assets/img/names/Dawn-Buse.jpg" alt="Dawn Buse" />
           </div>
           <div class="person-meta">
             <h4>Dawn Buse</h4>
@@ -861,6 +868,6 @@
   </footer>
 
   <script src="assets/js/site.js"></script>
-  <script src="assets/js/leadership-map.js"></script>
+  <script src="assets/js/leadership-map.js?v=20261109-robinson"></script>
 </body>
 </html>

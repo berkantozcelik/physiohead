@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="assets/css/styles.css" />
+  <link rel="stylesheet" href="assets/css/styles.css?v=20261109" />
 </head>
 <body>
   <header class="site-header">
@@ -32,28 +32,98 @@
   </header>
 
   <main class="container">
-    <section class="section">
-      <h2>Latest Activities</h2>
-      <div class="activity-feed">
-        <a class="feed-card reveal stagger" href="first-physiohead-meeting.html" style="--d: 0.1s;">
-          <div class="feed-image">
-            <img src="assets/img/illustrations/headline-meeting.png" alt="Screenshot from the first PhysioHead meeting" />
-          </div>
-          <div class="feed-content">
-            <div class="feed-meta">
-              <span class="pill">Latest announcement</span>
-              <span>April 2026</span>
+    <section class="section activity-hub" id="activity-library">
+      <div class="section-head">
+        <span class="tag">Activity library</span>
+        <h2>Activities</h2>
+        <p class="lead">Watch our webinars, catch up on SIG meetings and find educational materials, all in one place.</p>
+      </div>
+
+      <div class="hub-layout">
+        <div class="hub-tabs" role="tablist" aria-label="Activity types">
+          <button class="hub-tab is-active" type="button" role="tab" id="tab-webinars" aria-controls="panel-webinars" aria-selected="true" data-hash="webinars">
+            <span class="hub-tab-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="13" rx="2" /><path d="M10.5 9.2v5.6l4.6-2.8z" /></svg>
+            </span>
+            <span class="hub-tab-label">Webinars</span>
+            <span class="hub-tab-count">1</span>
+          </button>
+          <button class="hub-tab" type="button" role="tab" id="tab-meetings" aria-controls="panel-meetings" aria-selected="false" tabindex="-1" data-hash="meetings">
+            <span class="hub-tab-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><circle cx="8" cy="9" r="2.6" /><circle cx="16" cy="9" r="2.6" /><path d="M3.5 18c0-2.4 2-4.2 4.5-4.2s4.5 1.8 4.5 4.2" /><path d="M11.5 18c0-2.4 2-4.2 4.5-4.2s4.5 1.8 4.5 4.2" /></svg>
+            </span>
+            <span class="hub-tab-label">Meetings</span>
+            <span class="hub-tab-count">1</span>
+          </button>
+          <button class="hub-tab" type="button" role="tab" id="tab-education" aria-controls="panel-education" aria-selected="false" tabindex="-1" data-hash="educational-materials">
+            <span class="hub-tab-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M4 6.5c3-2 6-2 8 0 2-2 5-2 8 0v11.5c-3-2-6-2-8 0-2-2-5-2-8 0z" /><path d="M12 6.5v11.5" /></svg>
+            </span>
+            <span class="hub-tab-label">Educational materials</span>
+            <span class="hub-tab-count is-soon">Soon</span>
+          </button>
+        </div>
+
+        <div class="hub-panels">
+          <div class="hub-panel" role="tabpanel" id="panel-webinars" aria-labelledby="tab-webinars">
+            <div class="hub-grid">
+              <!-- To add a webinar: copy this <button> and change data-video-id (the part after "v=" in the YouTube link), the title and the text. -->
+              <button class="video-card" type="button" data-video-id="Ej7bw_v5IxI" data-video-title="Beyond Medications in Headache Care">
+                <span class="video-thumb">
+                  <img src="https://i.ytimg.com/vi/Ej7bw_v5IxI/hqdefault.jpg" alt="" loading="lazy" />
+                  <span class="video-play" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z" /></svg>
+                  </span>
+                  <span class="video-duration">1:40:27</span>
+                </span>
+                <span class="video-body">
+                  <span class="video-series">PhysioHead Webinars &middot; 7 October 2026</span>
+                  <span class="video-title">Beyond Medications in Headache Care</span>
+                  <span class="video-action">Watch here &rarr;</span>
+                </span>
+              </button>
             </div>
-            <h3>The first PhysioHead meeting has been held</h3>
-            <p>
-              Read the announcement. Access to the detailed meeting materials
-              requires member login.
-            </p>
-            <div class="feed-action">Open announcement &rarr;</div>
           </div>
-        </a>
+
+          <div class="hub-panel" role="tabpanel" id="panel-meetings" aria-labelledby="tab-meetings" hidden>
+            <div class="hub-grid">
+              <a class="feed-card" href="first-physiohead-meeting.html">
+                <div class="feed-image">
+                  <img src="assets/img/illustrations/headline-meeting.jpg" alt="Screenshot from the first PhysioHead meeting" loading="lazy" />
+                </div>
+                <div class="feed-content">
+                  <div class="feed-meta">
+                    <span class="pill">SIG meeting</span>
+                    <span>April 2026</span>
+                  </div>
+                  <h3>The first PhysioHead meeting has been held</h3>
+                  <p>Read the announcement. Access to the detailed meeting materials requires member login.</p>
+                  <div class="feed-action">Open announcement &rarr;</div>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          <div class="hub-panel" role="tabpanel" id="panel-education" aria-labelledby="tab-education" hidden>
+            <div class="hub-soon">
+              <span class="pill">Coming soon</span>
+              <h3>Educational materials are on the way</h3>
+              <p>We are preparing resources for clinicians, cross-disciplinary training materials and patient-centred guides. They will appear here as soon as they are ready.</p>
+              <a class="button secondary" href="contact.html">Get notified or contribute</a>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
+
+    <dialog class="video-dialog" id="video-dialog" aria-labelledby="video-dialog-title">
+      <div class="video-dialog-head">
+        <h3 id="video-dialog-title">Webinar</h3>
+        <button class="video-dialog-close" type="button" aria-label="Close video">&times;</button>
+      </div>
+      <div class="video-frame"></div>
+      <a class="video-dialog-link" href="#" target="_blank" rel="noopener noreferrer">Open on YouTube &#8599;</a>
+    </dialog>
 
     <div class="activity-flow">
       <canvas class="activity-flow-canvas" aria-hidden="true"></canvas>
@@ -189,5 +259,6 @@
   </footer>
 
   <script src="assets/js/site.js"></script>
+  <script src="assets/js/activities.js"></script>
 </body>
 </html>
