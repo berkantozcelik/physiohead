@@ -1560,6 +1560,22 @@ body.live-speaker {
   animation: livePulse 1.6s ease-in-out infinite;
 }
 
+.live-banner-badge.is-upcoming {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.live-banner-badge.is-upcoming::before {
+  display: none;
+}
+
+.live-banner-count {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: #7dd3fc;
+}
+
 .live-banner-title {
   font-family: var(--font-title);
   font-size: clamp(1.25rem, 2.4vw, 1.7rem);
