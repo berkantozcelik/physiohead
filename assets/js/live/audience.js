@@ -173,9 +173,10 @@ function renderStage() {
   } else if (webinar.status === 'scheduled') {
     renderCountdown(webinar);
   } else if (webinar.videoId) {
-    const autoplay = webinar.status === 'live';
-    state.player = mountPlayer($('live-frame'), { videoId: webinar.videoId, title: webinar.title, autoplay });
-    $('live-sound-note').hidden = !autoplay;
+    // The video starts by itself (muted, as browsers require) for the live
+    // broadcast and for the replay.
+    state.player = mountPlayer($('live-frame'), { videoId: webinar.videoId, title: webinar.title, autoplay: true });
+    $('live-sound-note').hidden = false;
   } else {
     frameMessage('PhysioHead Webinars', webinar.status === 'ended'
       ? 'This webinar has ended. The replay will appear here soon.'

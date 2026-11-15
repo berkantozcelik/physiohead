@@ -8,7 +8,17 @@ const providers = {
     const iframe = document.createElement('iframe');
     // Browsers only allow a video to start by itself when it is muted.
     const start = autoplay ? '&autoplay=1&mute=1' : '';
-    iframe.src = `https://www.youtube-nocookie.com/embed/${encodeURIComponent(videoId)}?rel=0&modestbranding=1&playsinline=1${start}`;
+    const origin = encodeURIComponent(window.location.origin);
+    iframe.src = `https://www.youtube-nocookie.com/embed/${encodeURIComponent(videoId)}?rel=0&modestbranding=1&playsinline=1&enablejsapi=1&origin=${origin}${start}`;
+    if (autoplay) {
+      // Ask the player to start again once it has loaded, in case the first
+      // automatic start was skipped. Muted playback is always allowed.
+      iframe.addEventListener('load', () => {
+        const send = (func, args = []) => iframe.contentWindow?.postMessage(
+          JSON.stringify({ event: 'command', func, args }), 'https://www.youtube-nocookie.com');
+        [600, 1800].forEach((delay) => setTimeout(() => { send('mute'); send('playVideo'); }, delay));
+      });
+    }
     iframe.title = title || 'PhysioHead webinar';
     iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
     iframe.referrerPolicy = 'strict-origin-when-cross-origin';
