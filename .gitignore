@@ -3,3 +3,4 @@ assets/img/*.pdf
 node_modules/
 .superpowers/
 *.log
+.claude/

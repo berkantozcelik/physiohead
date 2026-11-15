@@ -776,8 +776,11 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const getNextPath = (fallback) => {
+    // Only plain pages of this site are allowed (for example "meeting-materials.html").
+    // Anything else, such as another website or a "javascript:" address, is ignored.
     const params = new URLSearchParams(window.location.search);
-    return params.get('next') || fallback;
+    const next = params.get('next') || '';
+    return /^[A-Za-z0-9_-]+\.html$/.test(next) ? next : fallback;
   };
 
   const loginForms = Array.from(document.querySelectorAll('[data-access-form]'));
