@@ -135,6 +135,35 @@
   border: 0;
 }
 
+/* The webinar's picture behind the countdown, darkened so the text stays readable */
+.live-frame-poster {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.live-frame.has-poster::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(180deg, rgba(5, 13, 31, 0.62), rgba(5, 13, 31, 0.88));
+}
+
+.live-frame.has-poster .live-frame-message {
+  z-index: 2;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.55);
+}
+
+.live-frame.has-poster .live-count-cell {
+  background: rgba(5, 13, 31, 0.55);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+
 .live-frame-message {
   position: absolute;
   inset: 0;

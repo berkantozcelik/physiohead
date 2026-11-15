@@ -117,10 +117,39 @@ function frameMessage(kicker, text, extra) {
     el('p', { class: 'live-frame-kicker', text: kicker }),
     el('p', { class: 'live-frame-text', text }),
     extra);
-  $('live-frame').replaceChildren(box);
+  const frame = $('live-frame');
+  const poster = frame.querySelector('.live-frame-poster'); // keep the picture while the message changes
+  frame.replaceChildren(...(poster ? [poster, box] : [box]));
+}
+
+/**
+ * The webinar's picture, shown behind the countdown. It is the thumbnail of the
+ * YouTube stream, so it is chosen in YouTube Studio (Customization / Thumbnail).
+ */
+function posterFor(webinar) {
+  if (!webinar.videoId) return null;
+  const id = encodeURIComponent(webinar.videoId);
+  const img = el('img', { class: 'live-frame-poster', alt: '', referrerPolicy: 'no-referrer' });
+  const sources = [`https://i.ytimg.com/vi/${id}/maxresdefault.jpg`, `https://i.ytimg.com/vi/${id}/hqdefault.jpg`];
+  let attempt = 0;
+  const next = () => {
+    if (attempt < sources.length) { img.src = sources[attempt]; attempt += 1; return; }
+    img.remove();
+    $('live-frame').classList.remove('has-poster');
+  };
+  img.addEventListener('error', next);
+  // YouTube answers a missing large picture with a tiny grey placeholder, not an error.
+  img.addEventListener('load', () => { if (img.naturalWidth <= 160) next(); });
+  next();
+  return img;
 }
 
 function renderCountdown(webinar) {
+  const poster = posterFor(webinar);
+  if (poster) {
+    $('live-frame').classList.add('has-poster');
+    $('live-frame').replaceChildren(poster);
+  }
   const tick = () => {
     const remaining = (webinar.startsAt || 0) - Date.now();
     if (!webinar.startsAt || remaining <= 0) {
@@ -166,6 +195,8 @@ function renderStage() {
   state.player?.destroy();
   state.player = null;
   $('live-sound-note').hidden = true;
+  $('live-frame').classList.remove('has-poster');
+  $('live-frame').querySelector('.live-frame-poster')?.remove();
 
   if (!webinar) {
     frameMessage('PhysioHead Webinars', 'No live webinar is planned right now.',
