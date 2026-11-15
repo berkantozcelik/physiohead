@@ -1,16 +1,19 @@
 /**
  * PhysioHead Live - connection settings.
  *
- * While this is null the live pages run in PREVIEW mode: sample data, kept in
- * your own browser only. To go live for real, follow docs/live-webinar-setup.md
- * and replace null with the settings Firebase gives you, for example:
+ * These are the Firebase web settings for the physiohead-live project. They
+ * only identify the project and are not secret; the security rules published
+ * in Firebase are what protect the data (see docs/live-webinar-setup.md).
  *
- * export const firebaseConfig = {
- *   apiKey: '...',
- *   authDomain: 'your-project.firebaseapp.com',
- *   databaseURL: 'https://your-project-default-rtdb.europe-west1.firebasedatabase.app',
- *   projectId: 'your-project',
- *   appId: '...',
- * };
+ * To go back to preview mode (sample data kept in your own browser), set
+ * firebaseConfig to null, or add ?demo=1 to a live page address.
  */
-export const firebaseConfig = null;
+export const firebaseConfig = {
+  apiKey: 'AIzaSyATZrN1_XfRerGLYRWa-7vFJwujVIGIw8s',
+  authDomain: 'physiohead-live.firebaseapp.com',
+  databaseURL: 'https://physiohead-live-default-rtdb.europe-west1.firebasedatabase.app',
+  projectId: 'physiohead-live',
+  storageBucket: 'physiohead-live.firebasestorage.app',
+  messagingSenderId: '637094269612',
+  appId: '1:637094269612:web:e5979ecebb415d12208509',
+};
