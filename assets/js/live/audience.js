@@ -52,6 +52,7 @@ const state = {
   activeTab: 'live-tab-qa',
   connected: true,
   readOnly: false,
+  fellBack: false,
   questionsDrawn: '',
   pollsDrawn: '',
   playerKey: '',
@@ -164,6 +165,7 @@ function renderStage() {
   clearInterval(countdownTimer);
   state.player?.destroy();
   state.player = null;
+  $('live-sound-note').hidden = true;
 
   if (!webinar) {
     frameMessage('PhysioHead Webinars', 'No live webinar is planned right now.',
@@ -171,7 +173,9 @@ function renderStage() {
   } else if (webinar.status === 'scheduled') {
     renderCountdown(webinar);
   } else if (webinar.videoId) {
-    state.player = mountPlayer($('live-frame'), { videoId: webinar.videoId, title: webinar.title });
+    const autoplay = webinar.status === 'live';
+    state.player = mountPlayer($('live-frame'), { videoId: webinar.videoId, title: webinar.title, autoplay });
+    $('live-sound-note').hidden = !autoplay;
   } else {
     frameMessage('PhysioHead Webinars', webinar.status === 'ended'
       ? 'This webinar has ended. The replay will appear here soon.'
@@ -402,8 +406,13 @@ function bindForms() {
 }
 
 // ---- start --------------------------------------------------------------
-function unavailable() {
-  showAlert('Q&A is temporarily unavailable. The video is not affected.', true);
+/** A short technical reason, shown in small print so a problem can be reported. */
+function reasonOf(error) {
+  return String(error?.code || error?.message || error || 'unknown').slice(0, 120);
+}
+
+function unavailable(reason) {
+  showAlert(`Q&A is temporarily unavailable. The video is not affected.${reason ? ` (${reason})` : ''}`, true);
 }
 
 function rememberWebinar(webinar) {
@@ -418,7 +427,7 @@ function rememberWebinar(webinar) {
  * still plays: ask the database directly (public, no sign-in), and failing
  * that use what this browser saw last time.
  */
-async function showFallbackWebinar() {
+async function showFallbackWebinar(reason) {
   let webinar = null;
   if (firebaseConfig?.databaseURL && !isDemoMode()) {
     try {
@@ -431,6 +440,7 @@ async function showFallbackWebinar() {
   }
   if (state.webinar !== undefined) return; // the room answered in the meantime
   state.readOnly = true;
+  state.fellBack = true;
   if (webinar && typeof webinar === 'object') {
     state.webinar = webinar;
     renderStage();
@@ -438,8 +448,10 @@ async function showFallbackWebinar() {
     frameMessage('PhysioHead Webinars', 'We cannot reach the live room right now.',
       el('p', { class: 'live-frame-sub', text: 'Please refresh the page in a moment.' }));
   }
-  showAlert('Q&A is temporarily unavailable. Please refresh the page in a moment.', true);
+  showAlert(`Q&A is temporarily unavailable. Please refresh the page in a moment.${reason ? ` (${reason})` : ''}`, true);
   renderComposers();
+  renderQuestions(true);
+  renderPolls(true);
 }
 
 async function start() {
@@ -457,7 +469,7 @@ async function start() {
     state.store = await createStore();
   } catch (error) {
     console.error('PhysioHead Live: could not open the live room', error);
-    await showFallbackWebinar();
+    await showFallbackWebinar(reasonOf(error));
     return;
   }
 
@@ -485,6 +497,14 @@ async function start() {
   const drawPolls = throttled(() => renderPolls());
   store.onWebinar((webinar) => {
     state.webinar = webinar;
+    if (state.fellBack) {
+      // The room answered after all; leave read-only mode.
+      state.fellBack = false;
+      state.readOnly = false;
+      showAlert('');
+      renderQuestions(true);
+      renderPolls(true);
+    }
     rememberWebinar(webinar);
     renderStage();
     renderComposers();
@@ -495,7 +515,9 @@ async function start() {
   store.onChat((list) => { state.chat = list; renderChat(); });
 
   // If the room stays silent, show the last webinar we know about.
-  setTimeout(() => { if (state.webinar === undefined) showFallbackWebinar(); }, 8000);
+  setTimeout(() => {
+    if (state.webinar === undefined) showFallbackWebinar('no answer from the live room after 12 seconds');
+  }, 12000);
 
   try {
     const { uid } = await store.ready();
@@ -503,7 +525,7 @@ async function start() {
   } catch (error) {
     console.error('PhysioHead Live: could not sign in to the live room', error);
     state.readOnly = true;
-    unavailable();
+    unavailable(reasonOf(error));
     renderComposers();
     renderQuestions(true);
     renderPolls(true);

@@ -223,6 +223,28 @@
   color: rgba(255, 255, 255, 0.7);
 }
 
+.live-sound-note {
+  margin: 0.6rem 0 0;
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--ink-muted);
+}
+
+.live-sound-note[hidden] {
+  display: none;
+}
+
+@media (max-width: 960px) {
+  .live-sound-note {
+    order: 1;
+    margin: 0;
+    padding: 0.4rem 1rem;
+    background: var(--mist);
+    text-align: center;
+  }
+}
+
 .live-info {
   margin-top: 1.25rem;
   padding: 1.25rem 1.5rem;
