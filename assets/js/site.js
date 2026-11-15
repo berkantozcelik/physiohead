@@ -846,3 +846,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 });
+
+// Live webinar signals (menu link and home-page banner), shown only while a webinar is live.
+import('./live/live-status.js').catch(() => {});

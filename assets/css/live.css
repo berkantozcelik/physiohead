@@ -1456,3 +1456,102 @@ body.live-speaker {
   font-size: 0.9rem;
   font-weight: 700;
 }
+
+/* ---- "Live now" signals on the rest of the site (see live-status.js) --------- */
+.nav-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: var(--live-red) !important;
+  font-weight: 700;
+}
+
+.nav-live-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--live-red);
+  animation: livePulse 1.6s ease-in-out infinite;
+}
+
+.live-banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.5rem;
+  margin: 1.25rem 0 0;
+  padding: 1rem 1.4rem;
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(circle at 90% 0%, rgba(14, 165, 233, 0.25), transparent 55%),
+    linear-gradient(160deg, var(--live-night), var(--live-night-2));
+  color: #fff;
+  box-shadow: var(--shadow-lg);
+  transition: transform 0.2s ease;
+}
+
+.live-banner:hover {
+  transform: translateY(-2px);
+}
+
+.live-banner:focus-visible {
+  outline: 3px solid var(--clay);
+  outline-offset: 3px;
+}
+
+.live-banner-body {
+  flex: 1 1 240px;
+  min-width: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.9rem;
+}
+
+.live-banner-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.3rem 0.75rem;
+  border-radius: 99px;
+  background: var(--live-red);
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.live-banner-badge::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #fff;
+  animation: livePulse 1.6s ease-in-out infinite;
+}
+
+.live-banner-title {
+  font-family: var(--font-title);
+  font-size: clamp(1.25rem, 2.4vw, 1.7rem);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.live-banner-action {
+  flex: none;
+  padding: 0.55rem 1.2rem;
+  border-radius: 99px;
+  background: #fff;
+  color: var(--forest);
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-live-dot,
+  .live-banner-badge::before {
+    animation: none;
+  }
+}
