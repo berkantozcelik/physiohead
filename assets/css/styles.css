@@ -169,6 +169,17 @@ main {
   background-color: var(--forest);
 }
 
+/* Keep the menu on one line on mid-width screens (the Live link made it longer). */
+@media (min-width: 861px) and (max-width: 1180px) {
+  .nav-links {
+    gap: 0.6rem;
+  }
+
+  .nav-links a {
+    font-size: 0.8rem;
+  }
+}
+
 .nav-cta {
   padding: 0.5rem 1.1rem;
   border-radius: 99px;

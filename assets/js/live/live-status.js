@@ -1,8 +1,8 @@
 /**
  * PhysioHead Live - "a webinar is live" signals on the rest of the site.
- * Loaded by site.js on every page. While a webinar is live it adds a red
- * "Live" link to the menu and, on the home page, a "Join" banner. Otherwise
- * it does nothing and the page looks exactly as before.
+ * Loaded by site.js on every page. The menu always has a "Live" link; while a
+ * webinar is live it turns red with a pulsing dot, and the home page gets a
+ * "Join" banner. Otherwise nothing changes.
  *
  * It reads the webinar once over plain HTTPS (not a live connection), so it
  * costs almost nothing, and checks again every two minutes.
@@ -38,17 +38,16 @@ function span(className, text) {
 }
 
 function showSignals(webinar) {
-  document.querySelector('.nav-live')?.remove();
+  const navLink = document.querySelector('.nav-links a[href="live.html"]');
+  navLink?.classList.remove('nav-live');
+  navLink?.querySelector('.nav-live-dot')?.remove();
   document.querySelector('.live-banner')?.remove();
   if (webinar?.status !== 'live') return;
 
-  const navLinks = document.querySelector('.nav-links');
-  if (navLinks) {
-    const link = document.createElement('a');
-    link.className = 'nav-live';
-    link.href = liveHref;
-    link.append(span('nav-live-dot', ''), 'Live');
-    navLinks.prepend(link);
+  // The menu always has a Live link; while a webinar is live it turns red.
+  if (navLink) {
+    navLink.classList.add('nav-live');
+    navLink.prepend(span('nav-live-dot', ''));
   }
 
   const main = document.querySelector('main');
