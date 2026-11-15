@@ -1,0 +1,16 @@
+{
+  "name": "physiohead-site",
+  "private": true,
+  "type": "module",
+  "description": "Dev-only tooling for the PhysioHead static site (tests for the live webinar section).",
+  "scripts": {
+    "test": "node --test tests/logic.test.mjs tests/store-contract.test.mjs",
+    "test:rules": "firebase emulators:exec --only database --project demo-physiohead 'node --test tests/rules.test.mjs'",
+    "test:firebase": "firebase emulators:exec --only database,auth --project demo-physiohead 'node --test --test-force-exit tests/firebase-store.test.mjs'"
+  },
+  "devDependencies": {
+    "@firebase/rules-unit-testing": "^6.0.0",
+    "firebase": "^13.3.0",
+    "firebase-tools": "^15.36.0"
+  }
+}

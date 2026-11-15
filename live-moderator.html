@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex" />
+  <title>Moderator Desk | PhysioHead Live</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/styles.css?v=20261109" />
+  <link rel="stylesheet" href="assets/css/live.css?v=20261115" />
+</head>
+<body class="live-page live-mod-page">
+  <header class="site-header">
+    <nav class="navbar">
+      <a class="brand" href="index.html">
+        <img src="assets/img/logo.png" alt="PhysioHead logo" />
+
+      </a>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="mission.html">Mission</a>
+        <a href="leadership.html">Members</a>
+        <a href="activities.html">Activities</a>
+        <a href="funding.html">Funding</a>
+        <a href="coming-soon.html">Coming Soon</a>
+        <a href="updates.html">Updates</a>
+        <a href="https://ichd-3.org/classification-outline/" target="_blank" rel="noopener noreferrer">ICHD-3</a>
+      </div>
+      <a class="nav-cta" href="contact.html">Contact / Join the SIG</a>
+    </nav>
+  </header>
+
+  <main class="live-main live-mod">
+    <p class="live-preview-note" id="mod-preview-note" hidden>Preview mode: sample data, visible only in this browser. Sign in with any email and the password &ldquo;demo&rdquo;.</p>
+
+    <section class="live-mod-signin" id="mod-signin" hidden>
+      <span class="tag">Moderators only</span>
+      <h1>Moderator desk</h1>
+      <p>Sign in with your moderator account to run the live webinar.</p>
+      <form id="mod-signin-form" novalidate>
+        <label for="mod-email">Email</label>
+        <input id="mod-email" type="email" autocomplete="username" required />
+        <label for="mod-password">Password</label>
+        <input id="mod-password" type="password" autocomplete="current-password" required />
+        <p class="live-mod-error" id="mod-signin-error" role="alert" hidden></p>
+        <button class="button primary" type="submit">Sign in</button>
+      </form>
+    </section>
+
+    <div id="mod-desk" hidden>
+      <div class="live-mod-top">
+        <div class="live-statusbar">
+          <span class="live-badge" id="mod-badge"></span>
+          <h1 class="live-title">Moderator desk</h1>
+        </div>
+        <div class="live-mod-top-actions">
+          <span class="live-mod-presence" id="mod-presence" hidden></span>
+          <a class="button secondary" href="live.html" target="_blank" rel="noopener" id="mod-open-live">Open audience page</a>
+          <a class="button secondary" href="live-speaker.html" target="_blank" rel="noopener" id="mod-open-speaker">Open speaker view</a>
+          <button class="button secondary" type="button" id="mod-signout">Sign out</button>
+        </div>
+      </div>
+      <p class="live-alert live-mod-alert" id="mod-alert" role="status" hidden></p>
+
+      <div class="live-mod-grid">
+        <div class="live-mod-col">
+          <section class="live-mod-card" aria-labelledby="mod-setup-title">
+            <h2 id="mod-setup-title">Webinar</h2>
+            <form id="mod-setup-form" novalidate>
+              <label for="mod-title">Title</label>
+              <input id="mod-title" type="text" maxlength="160" />
+              <label for="mod-starts">Start date and time <span class="live-optional">(your local time)</span></label>
+              <input id="mod-starts" type="datetime-local" />
+              <label for="mod-speakers">Speakers</label>
+              <input id="mod-speakers" type="text" maxlength="300" placeholder="Names separated by commas" />
+              <label for="mod-description">Description</label>
+              <textarea id="mod-description" rows="3" maxlength="1500"></textarea>
+              <label for="mod-video">YouTube live link or video ID</label>
+              <input id="mod-video" type="text" maxlength="200" placeholder="https://www.youtube.com/live/&hellip;" />
+              <p class="live-mod-error" id="mod-video-error" role="alert" hidden>Not a valid YouTube link.</p>
+              <div class="live-mod-actions">
+                <button class="button secondary" type="submit">Save details</button>
+              </div>
+            </form>
+            <div class="live-mod-broadcast">
+              <p class="live-mod-hint" id="mod-status-hint"></p>
+              <div class="live-mod-actions">
+                <button class="button primary" type="button" id="mod-go-live">Go live</button>
+                <button class="button secondary" type="button" id="mod-end">End webinar</button>
+                <button class="button secondary live-mod-danger" type="button" id="mod-reset">Reset for next webinar</button>
+              </div>
+            </div>
+          </section>
+
+          <section class="live-mod-card" aria-labelledby="mod-polls-title">
+            <h2 id="mod-polls-title">Polls</h2>
+            <div id="mod-polls" class="live-mod-list"></div>
+            <form id="mod-poll-form" novalidate>
+              <h3>New poll</h3>
+              <label for="mod-poll-question">Question</label>
+              <input id="mod-poll-question" type="text" maxlength="200" />
+              <div id="mod-poll-options"></div>
+              <p class="live-mod-error" id="mod-poll-error" role="alert" hidden>Enter a question and 2 to 6 options.</p>
+              <div class="live-mod-actions">
+                <button class="button secondary" type="button" id="mod-poll-add">Add option</button>
+                <button class="button primary" type="submit">Save as draft</button>
+              </div>
+            </form>
+          </section>
+        </div>
+
+        <div class="live-mod-col">
+          <section class="live-mod-card" aria-labelledby="mod-questions-title">
+            <h2 id="mod-questions-title">Questions</h2>
+            <div id="mod-questions" class="live-mod-list"></div>
+          </section>
+
+          <section class="live-mod-card" aria-labelledby="mod-chat-title">
+            <h2 id="mod-chat-title">Chat</h2>
+            <div class="live-mod-chatbar">
+              <label for="mod-slow">Slow mode</label>
+              <select id="mod-slow">
+                <option value="0">Off</option>
+                <option value="10">10 seconds</option>
+                <option value="30">30 seconds</option>
+                <option value="60">60 seconds</option>
+              </select>
+              <label class="live-mod-check"><input type="checkbox" id="mod-lock" /> Pause chat</label>
+            </div>
+            <div id="mod-chat" class="live-mod-list live-mod-chatlist"></div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-grid">
+      <div>
+        <strong>PhysioHead SIG</strong>
+        <p>Physiotherapy & Behavioral Approaches in Headache Care</p>
+        <small>Proposed international SIG focused on non-pharmacological headache care.</small>
+      </div>
+      <div>
+        <strong>Explore</strong>
+        <p><a href="mission.html">Mission & objectives</a></p>
+        <p><a href="funding.html">Funding</a></p>
+        <p><a href="updates.html">Updates</a></p>
+        <p><a href="https://ichd-3.org/classification-outline/" target="_blank" rel="noopener noreferrer">ICHD-3 classification</a></p>
+        <p><a href="leadership.html">Members</a></p>
+        <p><a href="contact.html">Contact</a></p>
+      </div>
+      <div>
+        <strong>Get involved</strong>
+        <p><a href="contact.html">Join or collaborate</a></p>
+        <p><a href="mailto:physiohead@secretary.net">physiohead@secretary.net</a></p>
+        <small>Official secretariat contact for PhysioHead communications.</small>
+      </div>
+      <div>
+        <strong>Legal</strong>
+        <p><a href="disclaimer.html">Disclaimer</a></p>
+        <p><a href="terms.html">Terms of Use</a></p>
+        <small>Last updated: February 21, 2026</small>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/site.js"></script>
+  <script type="module" src="assets/js/live/moderator.js"></script>
+</body>
+</html>

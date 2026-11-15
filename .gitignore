@@ -1,2 +1,5 @@
 .DS_Store
 assets/img/*.pdf
+node_modules/
+.superpowers/
+*.log

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Live Webinar | PhysioHead</title>
+  <meta name="description" content="Watch PhysioHead webinars live, ask the speakers questions and take part in polls." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/styles.css?v=20261109" />
+  <link rel="stylesheet" href="assets/css/live.css?v=20261115" />
+</head>
+<body class="live-page">
+  <header class="site-header">
+    <nav class="navbar">
+      <a class="brand" href="index.html">
+        <img src="assets/img/logo.png" alt="PhysioHead logo" />
+
+      </a>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="mission.html">Mission</a>
+        <a href="leadership.html">Members</a>
+        <a href="activities.html">Activities</a>
+        <a href="funding.html">Funding</a>
+        <a href="coming-soon.html">Coming Soon</a>
+        <a href="updates.html">Updates</a>
+        <a href="https://ichd-3.org/classification-outline/" target="_blank" rel="noopener noreferrer">ICHD-3</a>
+      </div>
+      <a class="nav-cta" href="contact.html">Contact / Join the SIG</a>
+    </nav>
+  </header>
+
+  <main class="live-main">
+    <p class="live-preview-note" id="live-preview-note" hidden>Preview mode: sample data, visible only in this browser.</p>
+
+    <div class="live-layout">
+      <section class="live-watch" aria-label="Webinar broadcast">
+        <div class="live-statusbar">
+          <span class="live-badge" id="live-badge" hidden></span>
+          <h1 class="live-title" id="live-title">PhysioHead Live</h1>
+        </div>
+
+        <div class="live-stage" id="live-stage">
+          <div class="live-frame" id="live-frame">
+            <div class="live-frame-message" id="live-frame-message">
+              <p class="live-frame-kicker">PhysioHead Webinars</p>
+              <p class="live-frame-text">Connecting to the live room&hellip;</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="live-info" id="live-info" hidden>
+          <p class="live-info-meta" id="live-info-meta"></p>
+          <p class="live-info-speakers" id="live-info-speakers"></p>
+          <p class="live-info-description" id="live-info-description"></p>
+        </div>
+      </section>
+
+      <aside class="live-panel" aria-label="Take part">
+        <div class="live-tabs" role="tablist" aria-label="Audience tools">
+          <button class="live-tab is-active" type="button" role="tab" id="live-tab-qa" aria-controls="live-pane-qa" aria-selected="true">Q&amp;A <span class="live-tab-count" id="live-count-qa" hidden></span></button>
+          <button class="live-tab" type="button" role="tab" id="live-tab-polls" aria-controls="live-pane-polls" aria-selected="false" tabindex="-1">Polls <span class="live-tab-dot" id="live-dot-polls" hidden><span class="live-sr">New poll</span></span></button>
+          <button class="live-tab" type="button" role="tab" id="live-tab-chat" aria-controls="live-pane-chat" aria-selected="false" tabindex="-1">Chat</button>
+        </div>
+
+        <p class="live-alert" id="live-alert" role="status" hidden></p>
+
+        <div class="live-pane" role="tabpanel" id="live-pane-qa" aria-labelledby="live-tab-qa">
+          <div class="live-scroll" id="live-questions"></div>
+          <form class="live-composer" id="live-question-form" novalidate>
+            <label class="live-sr" for="live-question-input">Your question for the speakers</label>
+            <textarea id="live-question-input" rows="2" maxlength="300" placeholder="Ask the speakers a question"></textarea>
+            <div class="live-composer-row">
+              <span class="live-composer-hint" id="live-question-hint">Questions are reviewed by a moderator first.</span>
+              <button class="button primary live-send" type="submit">Send</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="live-pane" role="tabpanel" id="live-pane-polls" aria-labelledby="live-tab-polls" hidden>
+          <div class="live-scroll" id="live-polls"></div>
+        </div>
+
+        <div class="live-pane" role="tabpanel" id="live-pane-chat" aria-labelledby="live-tab-chat" hidden>
+          <div class="live-scroll" id="live-chat" aria-live="polite"></div>
+          <form class="live-composer" id="live-chat-form" novalidate>
+            <label class="live-sr" for="live-chat-input">Chat message</label>
+            <div class="live-composer-row">
+              <input id="live-chat-input" type="text" maxlength="300" autocomplete="off" placeholder="Say something" />
+              <button class="button primary live-send" type="submit">Send</button>
+            </div>
+            <span class="live-composer-hint" id="live-chat-hint"></span>
+          </form>
+        </div>
+
+        <form class="live-profile" id="live-profile-form" hidden novalidate>
+          <h2>Introduce yourself</h2>
+          <p>Your name and profession appear next to your questions and messages.</p>
+          <label for="live-profile-name">Name</label>
+          <input id="live-profile-name" type="text" maxlength="60" autocomplete="name" placeholder="Dr. Ay&#351;e Demir" required />
+          <label for="live-profile-role">Profession <span class="live-optional">(optional)</span></label>
+          <input id="live-profile-role" type="text" maxlength="60" autocomplete="organization-title" placeholder="Physiotherapist" />
+          <p class="live-profile-error" id="live-profile-error" role="alert" hidden>Please enter your name.</p>
+          <div class="live-profile-actions">
+            <button class="button secondary" type="button" id="live-profile-cancel">Cancel</button>
+            <button class="button primary" type="submit">Continue</button>
+          </div>
+        </form>
+
+        <p class="live-identity" id="live-identity" hidden></p>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-grid">
+      <div>
+        <strong>PhysioHead SIG</strong>
+        <p>Physiotherapy & Behavioral Approaches in Headache Care</p>
+        <small>Proposed international SIG focused on non-pharmacological headache care.</small>
+      </div>
+      <div>
+        <strong>Explore</strong>
+        <p><a href="mission.html">Mission & objectives</a></p>
+        <p><a href="funding.html">Funding</a></p>
+        <p><a href="updates.html">Updates</a></p>
+        <p><a href="https://ichd-3.org/classification-outline/" target="_blank" rel="noopener noreferrer">ICHD-3 classification</a></p>
+        <p><a href="leadership.html">Members</a></p>
+        <p><a href="contact.html">Contact</a></p>
+      </div>
+      <div>
+        <strong>Get involved</strong>
+        <p><a href="contact.html">Join or collaborate</a></p>
+        <p><a href="mailto:physiohead@secretary.net">physiohead@secretary.net</a></p>
+        <small>Official secretariat contact for PhysioHead communications.</small>
+      </div>
+      <div>
+        <strong>Legal</strong>
+        <p><a href="disclaimer.html">Disclaimer</a></p>
+        <p><a href="terms.html">Terms of Use</a></p>
+        <small>Last updated: February 21, 2026</small>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/site.js"></script>
+  <script type="module" src="assets/js/live/audience.js"></script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex" />
+  <title>Speaker View | PhysioHead Live</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/styles.css?v=20261109" />
+  <link rel="stylesheet" href="assets/css/live.css?v=20261115" />
+</head>
+<body class="live-speaker">
+  <main class="live-speaker-main">
+    <header class="live-speaker-head">
+      <img src="assets/img/logo.png" alt="PhysioHead" />
+      <div>
+        <p class="live-frame-kicker">Speaker view</p>
+        <h1 id="speaker-title">Audience questions</h1>
+      </div>
+      <span class="live-badge" id="speaker-badge" hidden></span>
+    </header>
+    <p class="live-speaker-alert" id="speaker-alert" role="status" hidden></p>
+    <div class="live-speaker-grid">
+      <section aria-labelledby="speaker-q-title">
+        <h2 id="speaker-q-title">Questions <span id="speaker-q-count"></span></h2>
+        <ol class="live-speaker-questions" id="speaker-questions"></ol>
+      </section>
+      <section aria-labelledby="speaker-p-title" id="speaker-poll-section" hidden>
+        <h2 id="speaker-p-title">Poll</h2>
+        <div id="speaker-poll"></div>
+      </section>
+    </div>
+  </main>
+  <script type="module" src="assets/js/live/speaker.js"></script>
+</body>
+</html>

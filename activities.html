@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="assets/css/styles.css?v=20261109" />
+  <link rel="stylesheet" href="assets/css/live.css?v=20261115" />
 </head>
 <body>
   <header class="site-header">
@@ -66,6 +67,8 @@
 
         <div class="hub-panels">
           <div class="hub-panel" role="tabpanel" id="panel-webinars" aria-labelledby="tab-webinars">
+            <!-- Filled in automatically when a live webinar is scheduled or running (see assets/js/live/activities-card.js). -->
+            <a class="live-card" id="live-card" href="live.html" hidden></a>
             <div class="hub-grid">
               <!-- To add a webinar: copy this <button> and change data-video-id (the part after "v=" in the YouTube link), the title and the text. -->
               <button class="video-card" type="button" data-video-id="Ej7bw_v5IxI" data-video-title="Beyond Medications in Headache Care">
@@ -260,5 +263,6 @@
 
   <script src="assets/js/site.js"></script>
   <script src="assets/js/activities.js"></script>
+  <script type="module" src="assets/js/live/activities-card.js"></script>
 </body>
 </html>

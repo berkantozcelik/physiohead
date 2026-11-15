@@ -1,0 +1,206 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "webinar": {
+      ".read": true,
+      ".write": "auth != null && root.child('moderators').child(auth.uid).val() === true",
+      "title": {
+        ".validate": "newData.isString() && newData.val().length <= 160"
+      },
+      "startsAt": {
+        ".validate": "newData.isNumber()"
+      },
+      "speakers": {
+        ".validate": "newData.isString() && newData.val().length <= 300"
+      },
+      "description": {
+        ".validate": "newData.isString() && newData.val().length <= 1500"
+      },
+      "videoId": {
+        ".validate": "newData.isString() && (newData.val() === '' || (newData.val().length === 11 && newData.val().matches(/^[A-Za-z0-9_-]+$/)))"
+      },
+      "status": {
+        ".validate": "newData.val() === 'scheduled' || newData.val() === 'live' || newData.val() === 'ended'"
+      },
+      "chatLocked": {
+        ".validate": "newData.isBoolean()"
+      },
+      "chatSlowSeconds": {
+        ".validate": "newData.val() === 0 || newData.val() === 10 || newData.val() === 30 || newData.val() === 60"
+      },
+      "$other": {
+        ".validate": false
+      }
+    },
+    "moderators": {
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid"
+      }
+    },
+    "pending": {
+      ".read": "auth != null && root.child('moderators').child(auth.uid).val() === true",
+      ".write": "auth != null && root.child('moderators').child(auth.uid).val() === true",
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid",
+        "$qid": {
+          ".write": "auth != null && auth.uid === $uid && !data.exists() && newData.exists() && root.child('webinar/status').val() !== 'ended' && $qid.length === 20 && $qid.matches(/^-[A-Za-z0-9_-]+$/) && (!root.child('pendingLast').child($uid).exists() || now - root.child('pendingLast').child($uid).child('at').val() >= 20000) && newData.parent().parent().parent().child('pendingLast').child($uid).child('at').val() === now && newData.parent().parent().parent().child('pendingLast').child($uid).child('id').val() === $qid",
+          ".validate": "newData.hasChildren(['text', 'name', 'role', 'createdAt'])",
+          "text": {
+            ".validate": "newData.isString() && newData.val().length <= 300 && newData.val().matches(/[^ ]/)"
+          },
+          "name": {
+            ".validate": "newData.isString() && newData.val().length <= 60 && newData.val().matches(/[^ ]/)"
+          },
+          "role": {
+            ".validate": "newData.isString() && newData.val().length <= 60"
+          },
+          "createdAt": {
+            ".validate": "newData.val() === now"
+          },
+          "$other": {
+            ".validate": false
+          }
+        }
+      }
+    },
+    "pendingLast": {
+      ".write": "auth != null && root.child('moderators').child(auth.uid).val() === true",
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid",
+        ".write": "auth != null && auth.uid === $uid && newData.hasChildren(['at', 'id'])",
+        "at": {
+          ".validate": "newData.val() === now"
+        },
+        "id": {
+          ".validate": "newData.isString() && newData.val().length === 20"
+        },
+        "$other": {
+          ".validate": false
+        }
+      }
+    },
+    "questions": {
+      ".read": true,
+      ".write": "auth != null && root.child('moderators').child(auth.uid).val() === true",
+      "$qid": {
+        ".validate": "newData.hasChildren(['text', 'name', 'role', 'votes', 'answered', 'createdAt'])",
+        "text": {
+          ".validate": "newData.isString() && newData.val().length <= 300 && newData.val().matches(/[^ ]/)"
+        },
+        "name": {
+          ".validate": "newData.isString() && newData.val().length <= 60 && newData.val().matches(/[^ ]/)"
+        },
+        "role": {
+          ".validate": "newData.isString() && newData.val().length <= 60"
+        },
+        "answered": {
+          ".validate": "newData.isBoolean()"
+        },
+        "createdAt": {
+          ".validate": "newData.isNumber()"
+        },
+        "votes": {
+          ".write": "auth != null && data.exists() && newData.val() === data.val() + 1 && !root.child('qvotes').child(auth.uid).child($qid).exists() && newData.parent().parent().parent().child('qvotes').child(auth.uid).child($qid).val() === true",
+          ".validate": "newData.isNumber()"
+        },
+        "$other": {
+          ".validate": false
+        }
+      }
+    },
+    "qvotes": {
+      ".write": "auth != null && root.child('moderators').child(auth.uid).val() === true",
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid",
+        "$qid": {
+          ".write": "auth != null && auth.uid === $uid && !data.exists() && newData.val() === true && root.child('questions').child($qid).child('votes').exists() && newData.parent().parent().parent().child('questions').child($qid).child('votes').val() === root.child('questions').child($qid).child('votes').val() + 1"
+        }
+      }
+    },
+    "polls": {
+      ".read": true,
+      ".write": "auth != null && root.child('moderators').child(auth.uid).val() === true",
+      "$pid": {
+        "status": {
+          ".validate": "newData.val() === 'open' || newData.val() === 'closed'"
+        },
+        "counts": {
+          "$idx": {
+            ".write": "auth != null && data.exists() && data.parent().parent().child('status').val() === 'open' && newData.val() === data.val() + 1 && !root.child('pvotes').child(auth.uid).child($pid).exists() && newData.parent().parent().parent().parent().child('pvotes').child(auth.uid).child($pid).val() === $idx",
+            ".validate": "newData.isNumber()"
+          }
+        }
+      }
+    },
+    "pollDrafts": {
+      ".read": "auth != null && root.child('moderators').child(auth.uid).val() === true",
+      ".write": "auth != null && root.child('moderators').child(auth.uid).val() === true"
+    },
+    "pvotes": {
+      ".write": "auth != null && root.child('moderators').child(auth.uid).val() === true",
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid",
+        "$pid": {
+          ".write": "auth != null && auth.uid === $uid && !data.exists() && newData.isString() && root.child('polls').child($pid).child('status').val() === 'open' && root.child('polls').child($pid).child('counts').child(newData.val()).exists() && newData.parent().parent().parent().child('polls').child($pid).child('counts').child(newData.val()).val() === root.child('polls').child($pid).child('counts').child(newData.val()).val() + 1"
+        }
+      }
+    },
+    "chat": {
+      ".read": true,
+      ".write": "auth != null && root.child('moderators').child(auth.uid).val() === true",
+      ".indexOn": [
+        "createdAt"
+      ],
+      "$mid": {
+        ".write": "auth != null && !data.exists() && newData.exists() && newData.child('uid').val() === auth.uid && root.child('webinar/status').val() !== 'ended' && $mid.length === 20 && $mid.matches(/^-[A-Za-z0-9_-]+$/) && root.child('webinar/chatLocked').val() !== true && (!root.child('chatLast').child(auth.uid).exists() || (now - root.child('chatLast').child(auth.uid).child('at').val() >= 3000 && (!root.child('webinar/chatSlowSeconds').isNumber() || now - root.child('chatLast').child(auth.uid).child('at').val() >= root.child('webinar/chatSlowSeconds').val() * 1000))) && newData.parent().parent().child('chatLast').child(auth.uid).child('at').val() === now && newData.parent().parent().child('chatLast').child(auth.uid).child('id').val() === $mid",
+        ".validate": "newData.hasChildren(['uid', 'name', 'role', 'text', 'createdAt'])",
+        "uid": {
+          ".validate": "newData.isString()"
+        },
+        "text": {
+          ".validate": "newData.isString() && newData.val().length <= 300 && newData.val().matches(/[^ ]/)"
+        },
+        "name": {
+          ".validate": "newData.isString() && newData.val().length <= 60 && newData.val().matches(/[^ ]/)"
+        },
+        "role": {
+          ".validate": "newData.isString() && newData.val().length <= 60"
+        },
+        "createdAt": {
+          ".validate": "newData.val() === now"
+        },
+        "$other": {
+          ".validate": false
+        }
+      }
+    },
+    "chatLast": {
+      ".write": "auth != null && root.child('moderators').child(auth.uid).val() === true",
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid",
+        ".write": "auth != null && auth.uid === $uid && newData.hasChildren(['at', 'id'])",
+        "at": {
+          ".validate": "newData.val() === now"
+        },
+        "id": {
+          ".validate": "newData.isString() && newData.val().length === 20"
+        },
+        "$other": {
+          ".validate": false
+        }
+      }
+    },
+    "presence": {
+      ".read": "auth != null && root.child('moderators').child(auth.uid).val() === true",
+      "$uid": {
+        ".write": "auth != null && auth.uid === $uid",
+        ".validate": "newData.val() === true"
+      }
+    },
+    "archive": {
+      ".read": "auth != null && root.child('moderators').child(auth.uid).val() === true",
+      ".write": "auth != null && root.child('moderators').child(auth.uid).val() === true"
+    }
+  }
+}
