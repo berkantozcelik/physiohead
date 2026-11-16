@@ -6,7 +6,9 @@
   "scripts": {
     "test": "node --test tests/logic.test.mjs tests/store-contract.test.mjs",
     "test:rules": "firebase emulators:exec --only database --project demo-physiohead 'node --test tests/rules.test.mjs'",
-    "test:firebase": "firebase emulators:exec --only database,auth --project demo-physiohead 'node --test --test-force-exit tests/firebase-store.test.mjs'"
+    "test:firebase": "firebase emulators:exec --only database,auth --project demo-physiohead 'node --test --test-force-exit tests/firebase-store.test.mjs'",
+    "stamp": "node tools/stamp-assets.mjs",
+    "stamp:check": "node tools/stamp-assets.mjs --check"
   },
   "devDependencies": {
     "@firebase/rules-unit-testing": "^6.0.0",

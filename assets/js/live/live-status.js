@@ -21,7 +21,7 @@ function loadStyles() {
     stylesReady = new Promise((resolve) => {
       const link = document.createElement('link');
       link.rel = 'stylesheet';
-      link.href = new URL('../../css/live.css?v=20261115', import.meta.url).href;
+      link.href = new URL('../../css/live.css?v=94952c0953', import.meta.url).href;
       link.onload = resolve;
       link.onerror = resolve;
       document.head.append(link);

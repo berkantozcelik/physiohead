@@ -1,0 +1,12 @@
+#!/bin/sh
+# Before every commit: give changed CSS/JS files a new version stamp so
+# visitors' browsers fetch them instead of using an old cached copy.
+# See tools/stamp-assets.mjs. Set up once per clone with:
+#   git config core.hooksPath .githooks
+command -v node >/dev/null 2>&1 || { echo "pre-commit: node not found, skipping asset stamps"; exit 0; }
+updated=$(node tools/stamp-assets.mjs) || exit 1
+if [ -n "$updated" ]; then
+  echo "$updated" | xargs git add --
+  echo "pre-commit: updated asset version stamps in:"
+  echo "$updated" | sed 's/^/  /'
+fi
